@@ -1,10 +1,14 @@
 import {createRoot} from 'react-dom/client';
 
 const App = () => {
-  return <div className='text-blue-500 font-bold'>Hello World!</div>;
+  return (
+    <div className='w-full h-full p-2 bg-white dark:bg-gray-700'>
+      <div className='text-blue-500 font-bold'>Hello World!</div>
+      <button className='p-2 border border-gray-700 bg-gray-100' type='button'>
+        Click Me!
+      </button>
+    </div>
+  );
 };
 
-const container = document.getElementById('root');
-if (container) {
-  createRoot(container).render(<App />);
-}
+createRoot(document.body).render(<App />);
