@@ -18,10 +18,11 @@ const Button = ({text, onClick}: ButtonProps) => {
 };
 const GlobalNav = () => {
   const navigate = useNavigate();
+
   return (
     <nav className='absolute overflow-hidden bottom-5 self-center flex flex-row border-gray-400 dark:border-gray-600 border rounded-sm'>
-      <Button text='Compass' onClick={() => navigate('/compass')} />
-      <Button text='Settings' onClick={() => navigate('/settings')} />
+      <Button text='Compass' onClick={() => navigate('/compass', {replace: true})} />
+      <Button text='Settings' onClick={() => navigate('/settings', {replace: false})} />
     </nav>
   );
 };
