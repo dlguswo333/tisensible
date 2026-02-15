@@ -1,17 +1,11 @@
-import {useEffect, useState} from 'react';
 import Compass from './Compass';
+import useCompassSensor from './useCompassSensor';
 import {getAzimuthString} from './util/string';
 
 const CompassContainer = () => {
-  const [rotate, setRotate] = useState(0);
+  const {value} = useCompassSensor();
+  const rotate = value?.alpha || 0;
   const quantizedRotate = Math.round(rotate);
-
-  useEffect(() => {
-    const id = setInterval(() => setRotate((rotate) => (rotate + 0.5) % 360), 10);
-    return () => {
-      clearInterval(id);
-    };
-  }, []);
 
   return (
     <div className='mt-auto mb-auto pt-[10vh] h-full overflow-auto'>
@@ -20,6 +14,9 @@ const CompassContainer = () => {
         {quantizedRotate.toString().padStart(3, ' ')}
         {'° '}
         {getAzimuthString(quantizedRotate).padEnd(2, ' ')}
+        <br />
+        {value?.absolute.toString() || 'null'} {Math.round(value?.alpha ?? 0)} {Math.round(value?.beta ?? 0)}{' '}
+        {Math.round(value?.gamma ?? 0)}
       </div>
     </div>
   );

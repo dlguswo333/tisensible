@@ -88,3 +88,21 @@ and use `var(--safe-area-inset-top, env(safe-area-inset-top, 0px))` and others i
 }
 ```
 
+# Compass
+You can get the rotation of the device relative to the earth coordinate system,
+by magnetometer sensor with `'deviceorientationabsolute'`.
+*absolute* means it provides relative to the earth's magnetic field.
+But not every feature should be built with magnetometer;
+it can be affected by nearby magnetic things, resulting in unwanted behaviors.
+Starting with Chrome 50, the original `'deviceorientation'` changed
+from magnetometer to accelerometer and gyroscope.
+<https://developer.chrome.com/blog/device-orientation-changes>
+
+If the event is based on the earth's magnetic pole, it will have `absolute` property set to `true`.
+Be careful! without it, the value cannot be trusted!
+
+The value you need is `alpha`. The alpha angle is 0° when the top of the device is pointing
+to the north pole, and increases towards the west, south, and east.
+Thus when the device is pointing the west, the `alpha` value is 270°.
+>The alpha angle is 0° when top of the device is pointed directly toward the Earth's north pole, and increases as the device is rotated counterclockwise. As such, 90° corresponds with pointing west, 180° with south, and 270° with east.\
+><https://developer.mozilla.org/en-US/docs/Web/API/Device_orientation_events/Orientation_and_motion_data_explained>

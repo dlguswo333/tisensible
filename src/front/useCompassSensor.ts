@@ -1,0 +1,27 @@
+import {useEffect, useState} from 'react';
+import CompassSensor from '../back/compassSensor';
+
+const compassSensor = new CompassSensor();
+
+const useCompassSensor = () => {
+  const [value, setValue] = useState<DeviceOrientationEvent | null>(null);
+  const [lastUpdateDate, setLastUpdateDate] = useState(new Date());
+
+  useEffect(() => {
+    const id = compassSensor.subscribe((value) => {
+      setValue(value);
+      setLastUpdateDate(new Date());
+    });
+
+    return () => {
+      compassSensor.unsubscribe(id);
+    };
+  }, []);
+
+  return {
+    value,
+    lastUpdateDate,
+  };
+};
+
+export default useCompassSensor;
