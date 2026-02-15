@@ -1,7 +1,11 @@
+import {range} from 'es-toolkit';
+
 type Props = {
   /** 0-360 in degree. */
   rotate: number;
 };
+
+const scales = range(0, 32);
 
 const Compass = ({rotate}: Props) => {
   return (
@@ -9,6 +13,17 @@ const Compass = ({rotate}: Props) => {
       <svg className='w-full h-full' viewBox='0 0 100 100'>
         <title>Compass</title>
         <g style={{transform: `rotate(${-1 * rotate}deg)`, transformOrigin: 'center'}}>
+          {scales.map((value) => (
+            <line
+              key={value}
+              style={{transform: `rotate(${(360 / scales.length) * value}deg)`, transformOrigin: 'center'}}
+              x1='2'
+              x2='7'
+              y1='50'
+              y2='50'
+              className='stroke-[0.75] stroke-gray-600 dark:stroke-gray-500'
+            />
+          ))}
           <line x1='50' x2='50' y1='2' y2='12' className='stroke-2 stroke-red-600' />
           <text
             x='50'
@@ -19,7 +34,7 @@ const Compass = ({rotate}: Props) => {
           >
             N
           </text>
-          <line x1='50' x2='50' y1='98' y2='88' className='stroke-2 stroke-black dark:stroke-white' />
+          <line x1='50' x2='50' y1='98' y2='88' className='stroke-1 stroke-black dark:stroke-white' />
           <text
             x='50'
             y='87'
@@ -29,7 +44,7 @@ const Compass = ({rotate}: Props) => {
           >
             S
           </text>
-          <line x1='88' x2='98' y1='50' y2='50' className='stroke-2 stroke-black dark:stroke-white' />
+          <line x1='88' x2='98' y1='50' y2='50' className='stroke-1 stroke-black dark:stroke-white' />
           <text
             x='88'
             y='50.8'
@@ -39,7 +54,7 @@ const Compass = ({rotate}: Props) => {
           >
             E
           </text>
-          <line x1='2' x2='12' y1='50' y2='50' className='stroke-2 stroke-black dark:stroke-white' />
+          <line x1='2' x2='12' y1='50' y2='50' className='stroke-1 stroke-black dark:stroke-white' />
           <text
             x='12'
             y='50.5'
