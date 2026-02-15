@@ -4,7 +4,8 @@ import {getAzimuthString} from './util/string';
 
 const CompassContainer = () => {
   const {value} = useCompassSensor();
-  const rotate = value?.alpha || 0;
+  const screenAngle = screen.orientation.angle;
+  const rotate = value?.alpha ? (value.alpha - screenAngle + 360) % 360 : 0;
   const quantizedRotate = Math.round(rotate);
 
   return (
@@ -14,9 +15,10 @@ const CompassContainer = () => {
         {quantizedRotate.toString().padStart(3, ' ')}
         {'° '}
         {getAzimuthString(quantizedRotate).padEnd(2, ' ')}
-        <br />
-        {value?.absolute.toString() || 'null'} {Math.round(value?.alpha ?? 0)} {Math.round(value?.beta ?? 0)}{' '}
-        {Math.round(value?.gamma ?? 0)}
+        <div className='h-3' />
+        <div className='text-xs flex flex-col items-center'>
+          <div>Screen Orientation: {screenAngle}°</div>
+        </div>
       </div>
     </div>
   );
