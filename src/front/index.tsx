@@ -26,7 +26,6 @@ const App = () => {
   return (
     <div className='w-full h-full p-2 bg-white dark:bg-gray-900 flex flex-col'>
       <div className='relative flex-1 flex flex-col'>
-        <div className='text-blue-500 font-bold'>Hello World!</div>
         <Routes>
           <Route
             path='compass'
