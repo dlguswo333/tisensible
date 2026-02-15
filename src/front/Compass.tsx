@@ -100,7 +100,7 @@ Needle.displayName = 'Needle';
 
 const Compass = ({rotate}: Props) => {
   return (
-    <div className='p-1 w-[90%] relative mx-auto max-w-2xl aspect-square'>
+    <div className='p-1 w-[90%] relative mx-auto max-w-2xl landscape:max-h-[70%] aspect-square'>
       <svg className='w-full h-full' viewBox='0 0 100 100'>
         <title>Compass</title>
         <g style={{transform: `rotate(${-1 * rotate}deg)`, transformOrigin: 'center'}}>

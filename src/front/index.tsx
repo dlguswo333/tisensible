@@ -24,20 +24,18 @@ const App = () => {
   }, []);
 
   return (
-    <div className='w-full h-full p-2 bg-white dark:bg-gray-900 flex flex-col'>
-      <div className='relative flex-1 flex flex-col'>
+    <div className='w-full h-full p-2 bg-white dark:bg-gray-900 relative flex flex-col items-stretch'>
+      <div className='h-full flex flex-col relative'>
+        <div className='flex-none flex flex-col h-full overflow-auto'>
+          <Routes>
+            <Route path='compass' element={<CompassContainer />} />
+            <Route path='settings' element={<SettingsContainer />} />
+            <Route path='*' element={<Navigate replace={true} to='/compass' />} />
+          </Routes>
+        </div>
         <Routes>
-          <Route
-            path='compass'
-            element={
-              <>
-                <CompassContainer />
-                <GlobalNav />
-              </>
-            }
-          />
-          <Route path='settings' element=<SettingsContainer /> />
-          <Route path='*' element={<Navigate replace={true} to='/compass' />} />
+          <Route path='settings' element={null} />
+          <Route path='*' element={<GlobalNav />} />
         </Routes>
       </div>
       <div></div>
