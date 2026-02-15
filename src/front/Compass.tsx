@@ -6,7 +6,7 @@ type Props = {
 const Compass = ({rotate}: Props) => {
   return (
     <div className='p-1 w-[90%] relative mx-auto max-w-2xl aspect-square'>
-      <svg className='w-full h-full' style={{rotate: `${rotate}deg`}} viewBox='0 0 100 100'>
+      <svg className='w-full h-full' style={{rotate: `${-1 * rotate}deg`}} viewBox='0 0 100 100'>
         <title>Compass</title>
         <line x1='50' x2='50' y1='2' y2='12' className='stroke-2 stroke-red-600' />
         <text
