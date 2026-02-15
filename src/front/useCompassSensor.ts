@@ -3,12 +3,16 @@ import CompassSensor from '../back/compassSensor';
 
 const compassSensor = new CompassSensor();
 
+/** Get compass sensor data relative to earth's magnetic field. */
 const useCompassSensor = () => {
   const [value, setValue] = useState<DeviceOrientationEvent | null>(null);
   const [lastUpdateDate, setLastUpdateDate] = useState(new Date());
 
   useEffect(() => {
     const id = compassSensor.subscribe((value) => {
+      if (!value?.absolute) {
+        return;
+      }
       setValue(value);
       setLastUpdateDate(new Date());
     });
