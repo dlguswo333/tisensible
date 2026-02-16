@@ -4,9 +4,9 @@ import z from 'zod';
 class CompassSensor {
   private subscribers: Record<string, (_: DeviceOrientationEvent) => unknown> = {};
 
-  private getUniqueID = () => {
+  private getUniqueID() {
     return v4();
-  };
+  }
 
   private addSubscriber(listener: (_: DeviceOrientationEvent) => unknown): string {
     const id = this.getUniqueID();

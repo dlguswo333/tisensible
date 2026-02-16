@@ -89,6 +89,9 @@ and use `var(--safe-area-inset-top, env(safe-area-inset-top, 0px))` and others i
 ```
 
 # Compass
+capacitor provides its official plugin for compass: <https://capacitorjs.com/docs/apis/motion>
+However since it says it is implemented using Web APIs, so the feature is implemented using direct Web APIs.
+
 You can get the rotation of the device relative to the earth coordinate system,
 by magnetometer sensor with `'deviceorientationabsolute'`.
 *absolute* means it provides relative to the earth's magnetic field.

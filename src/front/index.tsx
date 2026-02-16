@@ -5,6 +5,7 @@ import {BrowserRouter, Navigate, Route, Routes} from 'react-router';
 import CompassContainer from './CompassContainer';
 import GlobalNav from './GlobalNav';
 import SettingsContainer from './SettingsContainer';
+import SpeedometerContainer from './SpeedometerContainer';
 
 const App = () => {
   useEffect(() => {
@@ -29,6 +30,7 @@ const App = () => {
         <div className='flex-none flex flex-col h-full overflow-auto'>
           <Routes>
             <Route path='compass' element={<CompassContainer />} />
+            <Route path='speedometer' element={<SpeedometerContainer />} />
             <Route path='settings' element={<SettingsContainer />} />
             <Route path='*' element={<Navigate replace={true} to='/compass' />} />
           </Routes>
