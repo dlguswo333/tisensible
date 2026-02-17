@@ -69,6 +69,10 @@ I tried to run the build inside android studio and it succeeded for nothing...?
 I thought it was the problem with jdk so I set `JAVA_HOME` to android studio's one (You can find the path in *android studio* > *build tools* > *gradle*.
 And it worked.
 
+# Set Version
+To set the app version, you need to change the clients' files manually.
+<https://github.com/ionic-team/capacitor/issues/840>
+
 # Safe Area
 Starting with android 15, edge-to-edge is encforced. So contents inside webview is expected to
 overlap with system bars, so need extra cares.
