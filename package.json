@@ -34,7 +34,7 @@
         "start": "vite",
         "build": "vite build",
         "prepare": "husky",
-        "lint": "npx @biomejs/biome check --write"
+        "lint": "npx @biomejs/biome check --write --error-on-warnings"
     },
     "author": {
         "name": "dlguswo333",
@@ -42,6 +42,6 @@
     },
     "license": "MIT",
     "lint-staged": {
-        "*": "npx @biomejs/biome check --write"
+        "*": "npx @biomejs/biome check --write --error-on-warnings"
     }
 }
