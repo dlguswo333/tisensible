@@ -109,3 +109,15 @@ to the north pole, and increases towards the west, south, and east.
 Thus when the device is pointing the west, the `alpha` value is 270°.
 >The alpha angle is 0° when top of the device is pointed directly toward the Earth's north pole, and increases as the device is rotated counterclockwise. As such, 90° corresponds with pointing west, 180° with south, and 270° with east.\
 ><https://developer.mozilla.org/en-US/docs/Web/API/Device_orientation_events/Orientation_and_motion_data_explained>
+
+# Geolocation
+
+Capacitor geolocation plugin source code is here:
+capacitor plugin: <https://github.com/ionic-team/capacitor-geolocation/blob/main/android/src/main/kotlin/com/capacitorjs/plugins/geolocation/GeolocationPlugin.kt>
+ionic plugin: <https://github.com/ionic-team/ion-android-geolocation/blob/main/src/main/kotlin/io/ionic/libs/iongeolocationlib/controller/IONGLOCController.kt>
+
+The object returned by may have `speed` value and on android this value may be more accurate than the manual `distance / time` value. So it is good to display the value if available.
+The speed value is in `meter / second`.
+<https://developer.android.com/reference/android/location/Location#getSpeed()>
+
+However, if the value is not available, you need to get it from the two continual geographical coordinates.

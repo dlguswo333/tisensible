@@ -9,27 +9,29 @@ const useSpeedometerSensor = () => {
   const [value, setValue] = useState<Position | null>(null);
   const [lastUpdateDate, setLastUpdateDate] = useState(new Date());
   const [isEnabled, setIsEnabled] = useState(false);
+  const [hasPermission, setHasPermission] = useState<boolean | null>(null);
+  const requestPermission = async () => {
+    const permissionResult = await speedometerSensor.requestPermission();
+    setHasPermission(permissionResult);
+    return permissionResult;
+  };
 
   useEffect(() => {
     let id: string | null = null;
     const callback = async () => {
       if (!isEnabled) {
-        await speedometerSensor.stop();
-        return;
-      }
-      const hasPermission = await speedometerSensor.requestPermission();
-      if (!hasPermission) {
         return;
       }
       id = speedometerSensor.subscribe((value) => {
         setValue(value);
         setLastUpdateDate(new Date());
       });
-      speedometerSensor.start();
     };
     callback();
 
     return () => {
+      setHasPermission(null);
+      setValue(null);
       if (id !== null) {
         speedometerSensor.unsubscribe(id);
       }
@@ -39,6 +41,8 @@ const useSpeedometerSensor = () => {
   return {
     isEnabled,
     setIsEnabled,
+    hasPermission,
+    requestPermission,
     value,
     lastUpdateDate,
   };

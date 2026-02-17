@@ -1,10 +1,9 @@
 import {Capacitor} from '@capacitor/core';
 import {type CallbackID, Geolocation, type Position} from '@capacitor/geolocation';
 import {v4} from 'uuid';
-import z from 'zod';
 
 class SpeedometerSensor {
-  private subscribers: Record<string, (_: Position) => unknown> = {};
+  private subscribers: Record<string, (_: Position | null) => unknown> = {};
   private position: Position | null = null;
   private watchID: CallbackID | null = null;
 
@@ -12,7 +11,7 @@ class SpeedometerSensor {
     return v4();
   }
 
-  private addSubscriber(listener: (_: Position) => unknown): string {
+  private addSubscriber(listener: (_: Position | null) => unknown): string {
     const id = this.getUniqueID();
     this.subscribers[id] = listener;
     return id;
@@ -36,18 +35,28 @@ class SpeedometerSensor {
 
   public async requestPermission(): Promise<boolean> {
     if (Capacitor.getPlatform() === 'web') {
-      // Not implmented on web.
-      return true;
+      try {
+        const permissionResult = await Geolocation.checkPermissions();
+        if (permissionResult.location === 'denied') {
+          return false;
+        }
+        return true;
+      } catch {
+        return false;
+      }
     }
     try {
-      await Geolocation.requestPermissions({permissions: ['location']});
+      const permissionResult = await Geolocation.requestPermissions({permissions: ['location']});
+      if (permissionResult.location !== 'granted') {
+        return false;
+      }
       return true;
     } catch {
       return false;
     }
   }
 
-  public async start() {
+  private async start() {
     if (this.watchID) {
       return;
     }
@@ -60,10 +69,17 @@ class SpeedometerSensor {
         interval: 1000,
         enableLocationFallback: false,
       },
-      (position) => {
-        this.position = position;
-        if (!this.position) {
+      (position, error) => {
+        if (error) {
+          for (const subscriber of Object.values(this.subscribers)) {
+            subscriber(null);
+          }
+          this.stop();
           return;
+        }
+        this.position = position;
+        if (typeof this.position?.coords?.speed !== 'number') {
+          this.position?.coords.latitude;
         }
         for (const subscriber of Object.values(this.subscribers)) {
           subscriber(this.position);
@@ -72,19 +88,20 @@ class SpeedometerSensor {
     );
   }
 
-  public async stop() {
+  private async stop() {
     if (!this.watchID) {
       return;
     }
-    await Geolocation.clearWatch({id: this.watchID});
-    this.watchID = null;
+    try {
+      await Geolocation.clearWatch({id: this.watchID});
+    } finally {
+      this.watchID = null;
+    }
   }
 
   public subscribe(setter: (value: Position | null) => unknown): string {
-    const listener = (event: Position) => {
-      setter(event);
-    };
-    return this.addSubscriber(listener);
+    this.start();
+    return this.addSubscriber(setter);
   }
 
   public unsubscribe(id: string): boolean {
@@ -92,7 +109,11 @@ class SpeedometerSensor {
     if (!listener) {
       return false;
     }
-    return this.deleteSubscriber(id);
+    const stopResult = this.deleteSubscriber(id);
+    if (Object.values(this.subscribers).length === 0) {
+      this.stop();
+    }
+    return stopResult;
   }
 }
 

@@ -1,4 +1,9 @@
+import {useEffect, useState} from 'react';
+import Speedometer from './Speedometer';
+import useCurrentDate from './useCurrentDate';
 import useSpeedometerSensor from './useSpeedometerSensor';
+import {calculateSpeedInUnit} from './util/speed';
+import {getRelativeTime} from './util/string';
 
 type ButtonProps = {
   onClick: () => unknown;
@@ -38,27 +43,47 @@ const StartButton = ({onClick}: ButtonProps) => {
 };
 
 const SpeedometerContainer = () => {
-  const {isEnabled, setIsEnabled, value} = useSpeedometerSensor();
+  const {isEnabled, hasPermission, requestPermission, setIsEnabled, value, lastUpdateDate} = useSpeedometerSensor();
+  const currentDate = useCurrentDate(1000);
+  const relLastUpdateDate = getRelativeTime(lastUpdateDate, currentDate);
+  const unit = 'km/h' as const;
+  const speed = calculateSpeedInUnit(value?.coords.speed ?? null, unit);
 
   return (
-    <div className='mt-auto mb-auto pt-[10vh] h-full overflow-auto'>
-      <div>
-        {value !== null && (
-          <div>
-            <div>speed: {value.coords.speed ?? 'speed not available'}</div>
-            <div>accuracy: {value.coords.accuracy ?? 'accuracy not available'}</div>
-            <div>longitude: {value.coords.longitude ?? 'longitude not available'}</div>
-            <div>latitude: {value.coords.latitude ?? 'latitude not available'}</div>
-          </div>
-        )}
+    <div className='my-auto pt-[10vh] h-full overflow-auto font-mono text-black dark:text-white'>
+      <div className='p-3 max-w-[90%] landscape:max-w-2xl flex flex-col content-start items-center mx-auto '>
+        <Speedometer value={speed ?? null} />
+        <div className='pt-2 px-3 pb-8 self-end text-right text-base'>{unit}</div>
       </div>
-      <div className='grid place-items-center'>
+      <div className='py-10 grid place-items-center'>
         {isEnabled ? (
           <StopButton onClick={() => setIsEnabled(false)} />
         ) : (
-          <StartButton onClick={() => setIsEnabled(true)} />
+          <StartButton
+            onClick={async () => {
+              if (!(await requestPermission())) {
+                return;
+              }
+              setIsEnabled(true);
+            }}
+          />
         )}
       </div>
+      <div className='pt-5 text-red-400 text-xl grid place-items-center'>
+        {hasPermission === false && (
+          <div>The permission has not been granted. Please grant the GPS permission in app settings.</div>
+        )}
+      </div>
+      {value !== null && (
+        <div>
+          <div>last update: {relLastUpdateDate}</div>
+          <div>speed: {value.coords.speed ?? 'speed not available'}</div>
+          <div>accuracy: {value.coords.accuracy ?? 'accuracy not available'}</div>
+          <div>latitude: {value.coords.latitude ?? 'latitude not available'}</div>
+          <div>longitude: {value.coords.longitude ?? 'longitude not available'}</div>
+          <div>altitude: {value.coords.altitude ?? 'altitude not available'}</div>
+        </div>
+      )}
     </div>
   );
 };
