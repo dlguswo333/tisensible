@@ -1,4 +1,3 @@
-import {useEffect, useState} from 'react';
 import Speedometer from './Speedometer';
 import useCurrentDate from './useCurrentDate';
 import useSpeedometerSensor from './useSpeedometerSensor';

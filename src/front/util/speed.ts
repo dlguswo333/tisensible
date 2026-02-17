@@ -1,5 +1,4 @@
-import type {Position} from '@capacitor/geolocation';
-
+/** Convert m/s into a different unit. */
 export const calculateSpeedInUnit = (speed: number | null, unit: 'km/h'): number | null => {
   if (speed === null) {
     return null;
