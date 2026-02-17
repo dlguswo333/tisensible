@@ -1,7 +1,5 @@
 import {useEffect, useState} from 'react';
-import CompassSensor from '../back/compassSensor';
-
-const compassSensor = new CompassSensor();
+import compassSensor from '../back/compassSensor';
 
 /** Get compass sensor data relative to earth's magnetic field. */
 const useCompassSensor = () => {

@@ -99,9 +99,9 @@ class SpeedometerSensor {
     }
   }
 
-  public subscribe(setter: (value: Position | null) => unknown): string {
+  public subscribe(subscriber: (value: Position | null) => unknown): string {
     this.start();
-    return this.addSubscriber(setter);
+    return this.addSubscriber(subscriber);
   }
 
   public unsubscribe(id: string): boolean {
@@ -117,4 +117,4 @@ class SpeedometerSensor {
   }
 }
 
-export default SpeedometerSensor;
+export default new SpeedometerSensor();

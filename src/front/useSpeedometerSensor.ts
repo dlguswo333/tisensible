@@ -1,8 +1,6 @@
 import type {Position} from '@capacitor/geolocation';
 import {useEffect, useState} from 'react';
-import SpeedometerSensor from '../back/speedometerSensor';
-
-const speedometerSensor = new SpeedometerSensor();
+import speedometerSensor from '../back/speedometerSensor';
 
 /** Get compass sensor data relative to earth's magnetic field. */
 const useSpeedometerSensor = () => {

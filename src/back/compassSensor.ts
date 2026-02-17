@@ -3,6 +3,7 @@ import z from 'zod';
 
 class CompassSensor {
   private subscribers: Record<string, (_: DeviceOrientationEvent) => unknown> = {};
+  private watcher: ((_: DeviceOrientationEvent) => unknown) | null = null;
 
   private getUniqueID() {
     return v4();
@@ -50,12 +51,29 @@ class CompassSensor {
     }
   }
 
-  public subscribe(setter: (value: DeviceOrientationEvent | null) => unknown): string {
-    const listener = (event: DeviceOrientationEvent) => {
-      setter(event);
+  private async start() {
+    if (this.watcher) {
+      return;
+    }
+    this.watcher = (event) => {
+      for (const subscriber of Object.values(this.subscribers)) {
+        subscriber(event);
+      }
     };
-    window.addEventListener('deviceorientationabsolute', listener);
-    return this.addSubscriber(listener);
+    window.addEventListener('deviceorientationabsolute', this.watcher);
+  }
+
+  private async stop() {
+    if (!this.watcher) {
+      return;
+    }
+    window.removeEventListener('deviceorientationabsolute', this.watcher);
+    this.watcher = null;
+  }
+
+  public subscribe(subscriber: (value: DeviceOrientationEvent | null) => unknown): string {
+    this.start();
+    return this.addSubscriber(subscriber);
   }
 
   public unsubscribe(id: string): boolean {
@@ -63,9 +81,12 @@ class CompassSensor {
     if (!listener) {
       return false;
     }
-    window.removeEventListener('deviceorientationabsolute', listener);
-    return this.deleteSubscriber(id);
+    const stopResult = this.deleteSubscriber(id);
+    if (Object.values(this.subscribers).length === 0) {
+      this.stop();
+    }
+    return stopResult;
   }
 }
 
-export default CompassSensor;
+export default new CompassSensor();
