@@ -12,7 +12,7 @@ const StopButton = ({onClick}: ButtonProps) => {
     <button
       type='button'
       onClick={onClick}
-      className='p-3 w-14 h-14 rounded-2xl bg-white dark:bg-gray-800 border border-gray-500 shadow-gray-500 shadow-xs active:scale-110 active:bg-sky-300/50 transition'
+      className='p-3 w-16 h-16 rounded-2xl bg-white dark:bg-gray-800 border border-gray-500 shadow-gray-500 shadow-xs active:scale-110 active:bg-sky-300/50 transition'
     >
       <svg className='w-full h-full fill-white stroke-1 stroke-black/30 overflow-visible' viewBox='0 0 100 100'>
         <title>Stop</title>
@@ -28,7 +28,7 @@ const StartButton = ({onClick}: ButtonProps) => {
     <button
       type='button'
       onClick={onClick}
-      className='p-2 w-14 h-14 rounded-2xl bg-white dark:bg-gray-800 border border-gray-500 shadow-gray-500 shadow-xs active:scale-110 active:bg-sky-300/50 transition'
+      className='p-2 w-16 h-16 rounded-2xl bg-white dark:bg-gray-800 border border-gray-500 shadow-gray-500 shadow-xs active:scale-110 active:bg-sky-300/50 transition'
     >
       <svg
         className='w-full h-full fill-green-500 drop-shadow-xs drop-shadow-green-500/30 overflow-visible'
