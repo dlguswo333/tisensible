@@ -49,7 +49,7 @@ const SpeedometerContainer = () => {
   const speed = calculateSpeedInUnit(value?.coords.speed ?? null, unit);
 
   return (
-    <div className='my-auto pt-[10vh] h-full overflow-auto font-mono text-black dark:text-white'>
+    <div className='my-auto pt-[10vh] h-full font-mono text-black dark:text-white'>
       <div className='p-3 max-w-[90%] landscape:max-w-2xl flex flex-col content-start items-center mx-auto '>
         <Speedometer value={speed ?? null} />
         <div className='pt-2 px-3 self-end text-right text-base'>{unit}</div>
@@ -74,7 +74,7 @@ const SpeedometerContainer = () => {
         )}
       </div>
       {value !== null && (
-        <div className='mx-auto p-3 w-fit max-w-full grid grid-cols-2 gap-x-1 text-sm overflow-hidden *:whitespace-nowrap *:text-ellipsis *:overflow-hidden'>
+        <div className='mx-auto p-3 pb-0 w-fit max-w-full grid grid-cols-2 gap-x-1 text-sm overflow-hidden *:whitespace-nowrap *:text-ellipsis *:overflow-hidden'>
           <div>last update:</div>
           <div>{relLastUpdateDate}</div>
           <div>speed:</div>
