@@ -52,9 +52,9 @@ const SpeedometerContainer = () => {
     <div className='my-auto pt-[10vh] h-full overflow-auto font-mono text-black dark:text-white'>
       <div className='p-3 max-w-[90%] landscape:max-w-2xl flex flex-col content-start items-center mx-auto '>
         <Speedometer value={speed ?? null} />
-        <div className='pt-2 px-3 pb-8 self-end text-right text-base'>{unit}</div>
+        <div className='pt-2 px-3 self-end text-right text-base'>{unit}</div>
       </div>
-      <div className='py-10 grid place-items-center'>
+      <div className='py-8 grid place-items-center'>
         {isEnabled ? (
           <StopButton onClick={() => setIsEnabled(false)} />
         ) : (
@@ -74,13 +74,19 @@ const SpeedometerContainer = () => {
         )}
       </div>
       {value !== null && (
-        <div>
-          <div>last update: {relLastUpdateDate}</div>
-          <div>speed: {value.coords.speed ?? 'speed not available'}</div>
-          <div>accuracy: {value.coords.accuracy ?? 'accuracy not available'}</div>
-          <div>latitude: {value.coords.latitude ?? 'latitude not available'}</div>
-          <div>longitude: {value.coords.longitude ?? 'longitude not available'}</div>
-          <div>altitude: {value.coords.altitude ?? 'altitude not available'}</div>
+        <div className='mx-auto p-3 w-fit max-w-full grid grid-cols-2 gap-x-1 text-sm overflow-hidden *:whitespace-nowrap *:text-ellipsis *:overflow-hidden'>
+          <div>last update:</div>
+          <div>{relLastUpdateDate}</div>
+          <div>speed:</div>
+          <div>{value.coords.speed ?? 'not available'}</div>
+          <div>accuracy:</div>
+          <div>{value.coords.accuracy ?? 'not available'}</div>
+          <div>latitude:</div>
+          <div>{value.coords.latitude ?? 'not available'}</div>
+          <div>longitude:</div>
+          <div>{value.coords.longitude ?? 'not available'}</div>
+          <div>altitude:</div>
+          <div>{value.coords.altitude ?? 'not available'}</div>
         </div>
       )}
     </div>
