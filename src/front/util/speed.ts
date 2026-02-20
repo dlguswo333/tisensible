@@ -1,10 +1,13 @@
 /** Convert m/s into a different unit. */
-export const calculateSpeedInUnit = (speed: number | null, unit: 'km/h'): number | null => {
+export const calculateSpeedInUnit = (speed: number | null, unit: 'km/h' | 'mi/h'): number | null => {
   if (speed === null) {
     return null;
   }
   if (unit === 'km/h') {
     return (speed / 1000) * 3600;
+  }
+  if (unit === 'mi/h') {
+    return (speed / 1609.34) * 3600;
   }
   return null;
 };

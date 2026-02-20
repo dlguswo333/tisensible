@@ -1,6 +1,7 @@
 import Speedometer from './Speedometer';
 import useCurrentDate from './useCurrentDate';
 import useSpeedometerSensor from './useSpeedometerSensor';
+import useSpeedUnit from './useSpeedUnit';
 import {calculateSpeedInUnit} from './util/speed';
 import {getRelativeTime} from './util/string';
 
@@ -45,14 +46,14 @@ const SpeedometerContainer = () => {
   const {isEnabled, hasPermission, requestPermission, setIsEnabled, value, lastUpdateDate} = useSpeedometerSensor();
   const currentDate = useCurrentDate(1000);
   const relLastUpdateDate = getRelativeTime(lastUpdateDate, currentDate);
-  const unit = 'km/h' as const;
-  const speed = calculateSpeedInUnit(value?.coords.speed ?? null, unit);
+  const {speedUnit} = useSpeedUnit();
+  const speed = calculateSpeedInUnit(value?.coords.speed ?? null, speedUnit);
 
   return (
     <div className='my-auto pt-[10vh] h-full font-mono text-black dark:text-white'>
       <div className='p-3 max-w-[90%] landscape:max-w-2xl flex flex-col content-start items-center mx-auto '>
         <Speedometer value={speed ?? null} />
-        <div className='pt-2 px-3 self-end text-right text-base'>{unit}</div>
+        <div className='pt-2 px-3 self-end text-right text-base'>{speedUnit}</div>
       </div>
       <div className='py-8 grid place-items-center'>
         {isEnabled ? (
