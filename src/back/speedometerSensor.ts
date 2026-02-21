@@ -1,10 +1,13 @@
 import {Capacitor} from '@capacitor/core';
 import {type CallbackID, Geolocation, type Position} from '@capacitor/geolocation';
+import {toMerged} from 'es-toolkit';
 import {v4} from 'uuid';
+import {getSpeedWithHaversine} from '../front/util/speed';
 
 class SpeedometerSensor {
   private subscribers: Record<string, (_: Position | null) => unknown> = {};
   private position: Position | null = null;
+  private prevPosition: Position | null = null;
   private watchID: CallbackID | null = null;
 
   private getUniqueID() {
@@ -77,10 +80,18 @@ class SpeedometerSensor {
           this.stop();
           return;
         }
-        this.position = position;
-        if (typeof this.position?.coords?.speed !== 'number') {
-          this.position?.coords.latitude;
+
+        if (this.prevPosition !== null && position !== null && position.coords.speed === null) {
+          // Since speed is not provided, calculate speed using the previous position.
+          const elapsedSec = (position.timestamp - this.prevPosition.timestamp) / 1000;
+          const speed = getSpeedWithHaversine(this.prevPosition.coords, position.coords, elapsedSec);
+          // Using JSON because using directy or cloning Position fails because of getter only properties.
+          const updatedPosition = toMerged(JSON.parse(JSON.stringify(position)), {coords: {speed}});
+          position = updatedPosition;
         }
+
+        this.prevPosition = this.position;
+        this.position = position;
         for (const subscriber of Object.values(this.subscribers)) {
           subscriber(this.position);
         }
@@ -92,6 +103,8 @@ class SpeedometerSensor {
     if (!this.watchID) {
       return;
     }
+    this.position = null;
+    this.prevPosition = null;
     try {
       await Geolocation.clearWatch({id: this.watchID});
     } finally {

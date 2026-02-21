@@ -125,3 +125,12 @@ The speed value is in `meter / second`.
 <https://developer.android.com/reference/android/location/Location#getSpeed()>
 
 However, if the value is not available, you need to get it from the two continual geographical coordinates.
+
+## Haversine Formula
+Haversine fourmula calculates the distance between the two points along the arc on the earth.
+This is more precise than the euclidean distance which finds the straight line, tunnel distance.
+However, it is an approximation; it assumes that the earth is an perfect sphere.
+But it is still a great approximation and is easy to understand and implement.
+
+<https://en.wikipedia.org/wiki/Haversine_formula>
+<https://www.math.ksu.edu/~dbski/writings/haversine.pdf>

@@ -11,3 +11,34 @@ export const calculateSpeedInUnit = (speed: number | null, unit: 'km/h' | 'mi/h'
   }
   return null;
 };
+
+const EARTH_RADIUS = 6371000;
+
+type Coord = {
+  latitude: number;
+  longitude: number;
+};
+
+const getHaversine = (radian: number) => {
+  return (1 - Math.cos(radian)) / 2;
+};
+const getRadianFromAngle = (angle: number) => {
+  return (angle * Math.PI) / 180;
+};
+const getDistWithHaversine = (a: Coord, b: Coord): number => {
+  const haversine =
+    getHaversine(getRadianFromAngle(a.latitude - b.latitude)) +
+    Math.cos(getRadianFromAngle(a.latitude)) *
+      Math.cos(getRadianFromAngle(b.latitude)) *
+      getHaversine(getRadianFromAngle(a.longitude - b.longitude));
+  const cosine = 1 - 2 * haversine;
+  const radian = Math.acos(cosine);
+  const dist = EARTH_RADIUS * radian;
+  return dist;
+};
+
+export const getSpeedWithHaversine = (a: Coord, b: Coord, elapsedSec: number): number => {
+  const dist = getDistWithHaversine(a, b);
+  const speed = dist / elapsedSec;
+  return speed;
+};
