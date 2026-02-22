@@ -20,7 +20,7 @@ type Coord = {
 };
 
 const getHaversine = (radian: number) => {
-  return (1 - Math.cos(radian)) / 2;
+  return Math.sin(radian / 2) ** 2;
 };
 const getRadianFromAngle = (angle: number) => {
   return (angle * Math.PI) / 180;
@@ -31,8 +31,7 @@ const getDistWithHaversine = (a: Coord, b: Coord): number => {
     Math.cos(getRadianFromAngle(a.latitude)) *
       Math.cos(getRadianFromAngle(b.latitude)) *
       getHaversine(getRadianFromAngle(a.longitude - b.longitude));
-  const cosine = 1 - 2 * haversine;
-  const radian = Math.acos(cosine);
+  const radian = 2 * Math.atan2(Math.sqrt(haversine), Math.sqrt(1 - haversine));
   const dist = EARTH_RADIUS * radian;
   return dist;
 };

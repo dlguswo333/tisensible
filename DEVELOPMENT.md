@@ -132,5 +132,50 @@ This is more precise than the euclidean distance which finds the straight line, 
 However, it is an approximation; it assumes that the earth is an perfect sphere.
 But it is still a great approximation and is easy to understand and implement.
 
+```ts
+console.log(getDistWithHaversine({latitude: 38.898, longitude: -77.037}, {latitude: 48.858, longitude: 2.294}));
+// 6161438.034825136
+```
+
 <https://en.wikipedia.org/wiki/Haversine_formula>
 <https://www.math.ksu.edu/~dbski/writings/haversine.pdf>
+
+### Floating Point Precision
+Usually, as the characteristics of this app, the distances you will get are mostly really short, having small *radian*s.
+For instance, say the earth radius is 6371km and the distance is 1km, then the radian is 0.000156961230576.
+
+When radians are near zero, using cosine function to get haversine values for such tiny radians is not a good idea.
+Cosine function's derivative at 0 is zero. It is hard to distinguish such small differences.
+Meanwhile sine function's derivative at 0 is 1. Compared to cosine it drastically increases having big delta values.
+This is because of the nature of floating point arithmetic. It is destined to have errors.
+
+Notice that cosine function gets fixated at 1, while sine function keeps changing.
+```js
+for (let i = 0;i < 10;++i) {
+  const radian = 1 / 6371 / (10 ** i);
+  console.log(i, radian, Math.cos(radian), Math.sin(radian));
+}
+```
+
+This code shows getting haversine values using two different methods.
+Notice that the result using cosine function sits to zero, while the other still emits non-zero.
+```js
+for (let i = 0;i < 10;++i) {
+  const radian = 1 / 6371 / (10 ** i);
+  console.log(i, radian, (1 - Math.cos(radian)) / 2, Math.sin(radian / 2) ** 2);
+}
+```
+
+Without knowing the implementation it cannot be guaranteed,
+but using arctan to get radian from haversine gives better results.
+Here you consider positive square roots only, then arctan function will give you the value between 0 and π / 2.
+And you need to double it, then you will get the radian value between 0 and π, the direct opposite side of the earth.
+```js
+for (let i = 0;i < 10;++i) {
+  const radian = 1 / 6371 / (10 ** i);
+  console.log(i, radian, Math.acos(Math.cos(radian)), Math.atan2(Math.sin(radian), Math.cos(radian)));
+}
+```
+
+<https://en.wikipedia.org/wiki/Catastrophic_cancellation>
+<https://math.stackexchange.com/questions/1126970/explain-why-catastrophic-cancellation-happens>
