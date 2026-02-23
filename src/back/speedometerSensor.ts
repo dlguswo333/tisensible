@@ -4,8 +4,21 @@ import {toMerged} from 'es-toolkit';
 import {v4} from 'uuid';
 import {getSpeedWithHaversine} from '../front/util/speed';
 
+export type SpeedometerValue =
+  | {
+      status: 'none';
+    }
+  | {
+      status: 'ok';
+      position: Position;
+    }
+  | {
+      status: 'error';
+      error: Error;
+    };
+
 class SpeedometerSensor {
-  private subscribers: Record<string, (_: Position | null) => unknown> = {};
+  private subscribers: Record<string, (_: SpeedometerValue) => unknown> = {};
   private position: Position | null = null;
   private prevPosition: Position | null = null;
   private watchID: CallbackID | null = null;
@@ -14,13 +27,13 @@ class SpeedometerSensor {
     return v4();
   }
 
-  private addSubscriber(listener: (_: Position | null) => unknown): string {
+  private addSubscriber(listener: (_: SpeedometerValue) => unknown): string {
     const id = this.getUniqueID();
     this.subscribers[id] = listener;
     return id;
   }
 
-  private getSubscriber(id: string): ((_: Position) => unknown) | null {
+  private getSubscriber(id: string): ((_: SpeedometerValue) => unknown) | null {
     if (!this.subscribers[id]) {
       return null;
     }
@@ -75,13 +88,19 @@ class SpeedometerSensor {
       (position, error) => {
         if (error) {
           for (const subscriber of Object.values(this.subscribers)) {
-            subscriber(null);
+            subscriber({status: 'error', error});
           }
           this.stop();
           return;
         }
+        if (position === null) {
+          for (const subscriber of Object.values(this.subscribers)) {
+            subscriber({status: 'none'});
+          }
+          return;
+        }
 
-        if (this.prevPosition !== null && position !== null && position.coords.speed === null) {
+        if (this.prevPosition !== null && position.coords.speed === null) {
           // Since speed is not provided, calculate speed using the previous position.
           const elapsedSec = (position.timestamp - this.prevPosition.timestamp) / 1000;
           const speed = getSpeedWithHaversine(this.prevPosition.coords, position.coords, elapsedSec);
@@ -93,7 +112,7 @@ class SpeedometerSensor {
         this.prevPosition = this.position;
         this.position = position;
         for (const subscriber of Object.values(this.subscribers)) {
-          subscriber(this.position);
+          subscriber({status: 'ok', position: this.position as Position});
         }
       },
     );
@@ -112,7 +131,7 @@ class SpeedometerSensor {
     }
   }
 
-  public subscribe(subscriber: (value: Position | null) => unknown): string {
+  public subscribe(subscriber: (value: SpeedometerValue) => unknown): string {
     this.start();
     return this.addSubscriber(subscriber);
   }

@@ -43,7 +43,8 @@ const StartButton = ({onClick}: ButtonProps) => {
 };
 
 const SpeedometerContainer = () => {
-  const {isEnabled, hasPermission, requestPermission, setIsEnabled, value, lastUpdateDate} = useSpeedometerSensor();
+  const {isEnabled, hasPermission, requestPermission, setIsEnabled, value, lastUpdateDate, error} =
+    useSpeedometerSensor();
   const currentDate = useCurrentDate(1000);
   const relLastUpdateDate = getRelativeTime(lastUpdateDate, currentDate);
   const {speedUnit} = useSpeedUnit();
@@ -73,6 +74,7 @@ const SpeedometerContainer = () => {
         {hasPermission === false && (
           <div>The permission has not been granted. Please grant the GPS permission in app settings.</div>
         )}
+        {error !== null && <div>GPS trackng has been failed. Check GPS permission or status.</div>}
       </div>
       {value !== null && (
         <div className='mx-auto p-3 pb-0 w-fit max-w-full grid grid-cols-2 gap-x-1 text-sm overflow-hidden *:whitespace-nowrap *:text-ellipsis *:overflow-hidden'>
