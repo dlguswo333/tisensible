@@ -106,13 +106,17 @@ class SpeedometerSensor {
           const speed = getSpeedWithHaversine(this.prevPosition.coords, position.coords, elapsedSec);
           // Using JSON because using directy or cloning Position fails because of getter only properties.
           const updatedPosition = toMerged(JSON.parse(JSON.stringify(position)), {coords: {speed}});
-          position = updatedPosition;
+          position = updatedPosition as Position;
         }
 
+        // At the first time, the following code will set [prev, cur] = [null, a]
+        // So at the second time, thinking the previous position has not been recorded,
+        // it might not calculate the speed on its own.
+        // But I think it might actually provider more accurate value.
         this.prevPosition = this.position;
         this.position = position;
         for (const subscriber of Object.values(this.subscribers)) {
-          subscriber({status: 'ok', position: this.position as Position});
+          subscriber({status: 'ok', position: this.position});
         }
       },
     );
