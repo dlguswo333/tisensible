@@ -3,7 +3,7 @@ import useCurrentDate from './useCurrentDate';
 import useSpeedometerSensor from './useSpeedometerSensor';
 import useSpeedUnit from './useSpeedUnit';
 import {calculateSpeedInUnit} from './util/speed';
-import {getRelativeTime} from './util/string';
+import {addSuffix, getLatitudeSuffix, getLongitudeSuffix, getRelativeTime} from './util/string';
 
 type ButtonProps = {
   onClick: () => unknown;
@@ -46,7 +46,6 @@ const SpeedometerContainer = () => {
   const {isEnabled, hasPermission, requestPermission, setIsEnabled, value, lastUpdateDate, error} =
     useSpeedometerSensor();
   const currentDate = useCurrentDate(1000);
-  const relLastUpdateDate = getRelativeTime(lastUpdateDate, currentDate);
   const {speedUnit} = useSpeedUnit();
   const speed = calculateSpeedInUnit(value?.coords.speed ?? null, speedUnit);
 
@@ -70,26 +69,32 @@ const SpeedometerContainer = () => {
           />
         )}
       </div>
-      <div className='pt-5 text-red-400 text-xl grid place-items-center'>
+      <div className='pt-5 text-red-400 grid place-items-center gap-y-2 text-sm font-bold whitespace-break-spaces text-center'>
         {hasPermission === false && (
-          <div>The permission has not been granted. Please grant the GPS permission in app settings.</div>
+          <div>⚠️ The permission has not been granted. Please grant the GPS permission from app settings.</div>
         )}
-        {error !== null && <div>GPS trackng has been failed. Check GPS permission or status.</div>}
+        {error !== null && <div>⚠️ GPS trackng has been failed. Check the GPS permission or status.</div>}
       </div>
       {value !== null && (
         <div className='mx-auto p-3 pb-0 w-fit max-w-full grid grid-cols-2 gap-x-1 text-sm overflow-hidden *:whitespace-nowrap *:text-ellipsis *:overflow-hidden'>
           <div>last update:</div>
-          <div>{relLastUpdateDate}</div>
+          <div>{getRelativeTime(lastUpdateDate, currentDate)}</div>
           <div>speed:</div>
-          <div>{value.coords.speed ?? 'not available'}</div>
+          <div>{addSuffix(value.coords.speed, 'm/s') ?? 'not available'}</div>
           <div>accuracy:</div>
-          <div>{value.coords.accuracy ?? 'not available'}</div>
+          <div>{addSuffix(value.coords.accuracy, 'm') ?? 'not available'}</div>
           <div>latitude:</div>
-          <div>{value.coords.latitude ?? 'not available'}</div>
+          <div>
+            {addSuffix(Math.abs(value.coords.latitude), getLatitudeSuffix(value.coords.latitude)) ?? 'not available'}
+          </div>
           <div>longitude:</div>
-          <div>{value.coords.longitude ?? 'not available'}</div>
+          <div>
+            {addSuffix(Math.abs(value.coords.longitude), getLongitudeSuffix(value.coords.longitude)) ?? 'not available'}
+          </div>
           <div>altitude:</div>
-          <div>{value.coords.altitude ?? 'not available'}</div>
+          <div>{addSuffix(value.coords.altitude, 'm') ?? 'not available'}</div>
+          <div>altitude accuracy:</div>
+          <div>{addSuffix(value.coords.altitudeAccuracy, 'm') ?? 'not available'}</div>
         </div>
       )}
     </div>

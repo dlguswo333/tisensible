@@ -10,6 +10,14 @@ export const getAzimuthString = (rotate: number) => {
   return azimuths[ind];
 };
 
+export const getLatitudeSuffix = (latitude: number) => {
+  return latitude > 0 ? '°N' : '°S';
+};
+
+export const getLongitudeSuffix = (longitude: number) => {
+  return longitude > 0 ? '°E' : '°W';
+};
+
 export const getRelativeTime = (date: Date, baseDate: Date) => {
   const diffSecond = dayjs(baseDate).diff(dayjs(date), 'second');
   if (diffSecond <= 3) {
@@ -23,4 +31,11 @@ export const getRelativeTime = (date: Date, baseDate: Date) => {
     return `${diffMinute} minutes ago`;
   }
   return 'A while ago';
+};
+
+export const addSuffix = (str: string | number | null | undefined, suffix: string) => {
+  if (str === null || str === undefined) {
+    return str;
+  }
+  return `${str}${suffix}`;
 };

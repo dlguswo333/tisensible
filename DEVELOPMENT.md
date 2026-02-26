@@ -115,11 +115,22 @@ Thus when the device is pointing the west, the `alpha` value is 270°.
 ><https://developer.mozilla.org/en-US/docs/Web/API/Device_orientation_events/Orientation_and_motion_data_explained>
 
 # Geolocation
-
 Capacitor geolocation plugin source code is here:
 capacitor plugin: <https://github.com/ionic-team/capacitor-geolocation/blob/main/android/src/main/kotlin/com/capacitorjs/plugins/geolocation/GeolocationPlugin.kt>
 ionic plugin: <https://github.com/ionic-team/ion-android-geolocation/blob/main/src/main/kotlin/io/ionic/libs/iongeolocationlib/controller/IONGLOCController.kt>
 
+## Geographic Coordinates
+Location object from Geolocation API contains geographic coordinates, comprised of latitude and longitude.
+They are denoted as decimal degrees and range within ±90° and ±180° respectively.
+>As with latitude and longitude, the values are bounded by ±90° and ±180° respectively.
+><https://en.wikipedia.org/wiki/Decimal_degrees>
+
+Negative latitude and longitude mean the south of the equator and the west of the prime meridiean respectively.
+>Positive latitudes are north of the equator, negative latitudes are south of the equator.
+>Positive longitudes are east of the Prime Meridian; negative longitudes are west of the Prime Meridian.
+><https://en.wikipedia.org/wiki/Decimal_degrees>
+
+## Speed
 The object returned by may have `speed` value and on android this value may be more accurate than the manual `distance / time` value. So it is good to display the value if available.
 The speed value is in `meter / second`.
 <https://developer.android.com/reference/android/location/Location#getSpeed()>
