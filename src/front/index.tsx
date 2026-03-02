@@ -3,7 +3,7 @@ import {useEffect} from 'react';
 import {createRoot} from 'react-dom/client';
 import {BrowserRouter, Navigate, Route, Routes} from 'react-router';
 import CompassContainer from './CompassContainer';
-import GlobalNav from './GlobalNav';
+import NavBar from './navBar/NavBar';
 import SettingsContainer from './SettingsContainer';
 import SpeedometerContainer from './SpeedometerContainer';
 
@@ -36,7 +36,7 @@ const App = () => {
           </Routes>
           <Routes>
             <Route path='settings' element={null} />
-            <Route path='*' element={<GlobalNav />} />
+            <Route path='*' element={<NavBar />} />
           </Routes>
         </div>
       </div>
