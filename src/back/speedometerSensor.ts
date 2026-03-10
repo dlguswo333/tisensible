@@ -83,7 +83,7 @@ class SpeedometerSensor {
         maximumAge: 1000,
         minimumUpdateInterval: 1000,
         interval: 1000,
-        enableLocationFallback: false,
+        enableLocationFallback: true,
       },
       (position, error) => {
         if (error) {
