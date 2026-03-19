@@ -6,8 +6,11 @@ import CompassContainer from './CompassContainer';
 import NavBar from './navBar/NavBar';
 import SettingsContainer from './SettingsContainer';
 import SpeedometerContainer from './SpeedometerContainer';
+import useUserAgreement from './useUserAgreement';
 
 const App = () => {
+  useUserAgreement(true);
+
   useEffect(() => {
     const registerBackButtonListener = () => {
       CapacitorApp.addListener('backButton', ({canGoBack}) => {

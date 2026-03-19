@@ -3,6 +3,7 @@
         "@capacitor/android": "^8.1.0",
         "@capacitor/app": "^8.0.1",
         "@capacitor/core": "^8.1.0",
+        "@capacitor/dialog": "^8.0.1",
         "@capacitor/geolocation": "^8.1.0",
         "dayjs": "^1.11.19",
         "es-toolkit": "^1.44.0",

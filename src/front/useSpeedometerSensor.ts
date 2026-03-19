@@ -1,6 +1,7 @@
 import type {Position} from '@capacitor/geolocation';
 import {useEffect, useState} from 'react';
 import speedometerSensor from '../back/speedometerSensor';
+import useUserAgreement from './useUserAgreement';
 
 /** Get compass sensor data relative to earth's magnetic field. */
 const useSpeedometerSensor = () => {
@@ -9,6 +10,8 @@ const useSpeedometerSensor = () => {
   const [lastUpdateDate, setLastUpdateDate] = useState(new Date());
   const [isEnabled, setIsEnabled] = useState(false);
   const [hasPermission, setHasPermission] = useState<boolean | null>(null);
+  const userAgreement = useUserAgreement(false);
+
   const requestPermission = async () => {
     const permissionResult = await speedometerSensor.requestPermission();
     setHasPermission(permissionResult);
@@ -16,7 +19,7 @@ const useSpeedometerSensor = () => {
   };
 
   useEffect(() => {
-    if (!isEnabled) {
+    if (!userAgreement || !isEnabled) {
       return;
     }
 
@@ -41,7 +44,7 @@ const useSpeedometerSensor = () => {
       setValue(null);
       speedometerSensor.unsubscribe(id);
     };
-  }, [isEnabled]);
+  }, [isEnabled, userAgreement]);
 
   return {
     isEnabled,
