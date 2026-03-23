@@ -32,14 +32,26 @@ const App = () => {
       <div className='h-full flex flex-col relative overflow-auto'>
         <div className='min-h-full flex-none flex flex-col'>
           <Routes>
-            <Route path='compass' element={<CompassContainer />} />
-            <Route path='speedometer' element={<SpeedometerContainer />} />
+            <Route
+              path='compass'
+              element={
+                <>
+                  <CompassContainer />
+                  <NavBar />
+                </>
+              }
+            />
+            <Route
+              path='speedometer'
+              element={
+                <>
+                  <SpeedometerContainer />
+                  <NavBar />
+                </>
+              }
+            />
             <Route path='settings' element={<SettingsContainer />} />
             <Route path='*' element={<Navigate replace={true} to='/compass' />} />
-          </Routes>
-          <Routes>
-            <Route path='settings' element={null} />
-            <Route path='*' element={<NavBar />} />
           </Routes>
         </div>
       </div>
