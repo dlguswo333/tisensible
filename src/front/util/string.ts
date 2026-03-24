@@ -5,7 +5,7 @@ import dayjs from 'dayjs';
  * Provides 8 distinct values.
  */
 export const getAzimuthString = (rotate: number) => {
-  const azimuths = ['N', 'NE', 'E', 'SE', 'S', 'SW', 'W', 'NW'];
+  const azimuths = ['N', 'NW', 'W', 'SW', 'S', 'SE', 'E', 'NE'];
   const ind = Math.floor(((rotate + 22.5) / 45) % 8);
   return azimuths[ind];
 };
