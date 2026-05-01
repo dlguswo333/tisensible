@@ -45,6 +45,6 @@
     },
     "license": "MIT",
     "lint-staged": {
-        "*": "npx @biomejs/biome check --write --error-on-warnings"
+        "*": "npx @biomejs/biome check --write --error-on-warnings --no-errors-on-unmatched"
     }
 }

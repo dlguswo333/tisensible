@@ -1,0 +1,43 @@
+name: Build Android
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Set up Node
+      uses: actions/setup-node@v6
+      with:
+        node-version: '22.x'
+        cache: npm
+
+    - name: Set up JDK
+      uses: actions/setup-java@v4
+      with:
+        java-version: '21'
+        distribution: 'jetbrains'
+
+    - name: Setup Android SDK
+      uses: android-actions/setup-android@v4
+
+    - name: Build tiSensible
+      run: |
+        npm ci
+        npm run build
+        npx cap sync
+        cd android
+        ./gradlew assemble
+        cd ..
+
+    - name: Upload build outputs
+      uses: actions/upload-artifact@v7
+      with:
+        name: app-release-unsigned.apk
+        path: android/app/build/outputs/apk/release/app-release-unsigned.apk
+        retention-days: 10
