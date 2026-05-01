@@ -73,6 +73,14 @@ And it worked.
 To set the app version, you need to change the clients' files manually.
 <https://github.com/ionic-team/capacitor/issues/840>
 
+# Set App Icon
+To set app icon, you need `@capacitor/assets` plugin.
+Add icons named *icon* to `/assets` folder; svg, png files are supported.
+Then run the following command:
+```shell
+npx @capacitor/assets generate --android
+```
+
 # Safe Area
 Starting with android 15, edge-to-edge is encforced. So contents inside webview is expected to
 overlap with system bars, so need extra cares.
