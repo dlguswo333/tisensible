@@ -50,13 +50,13 @@ jobs:
           --ks-key-alias "$KEY_ALIAS" \
           --ks-pass pass:"$KEY_PASSWORD" \
           --key-pass pass:"$KEY_PASSWORD" \
-          --out android/app/build/outputs/apk/release/app-release-unsigned-aligned.apk \
-          app-release-signed.apk
+          --out app-release-signed.apk
+          app-release-unsigned-aligned.apk
         rm keystore.jks
 
     - name: Upload build outputs
       uses: actions/upload-artifact@v7
       with:
         name: app-release-signed.apk
-        path: android/app/build/outputs/apk/release/app-release-signed.apk
+        path: app-release-signed.apk
         retention-days: 10
