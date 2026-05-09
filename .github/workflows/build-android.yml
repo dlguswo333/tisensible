@@ -43,7 +43,7 @@ jobs:
       run: |
         BUILD_TOOL_DIR=$(ls -d $ANDROID_HOME/build-tools/* | tail -1)
         echo "$KEYSTORE_BASE64" | base64 --decode > keystore.jks
-        $BUILD_TOOLS_DIR/zipalign -v -p 4 app-release-unsigned.apk app-release-unsigned-aligned.apk
+        $BUILD_TOOL_DIR/zipalign -v -p 4 app-release-unsigned.apk app-release-unsigned-aligned.apk
         $BUILD_TOOL_DIR/apksigner sign \
           --ks keystore.jks \
           --ks-key-alias "$KEY_ALIAS" \
