@@ -35,9 +35,27 @@ jobs:
         ./gradlew assemble
         cd ..
 
+    - name: Sign tiSensible
+      env:
+        KEYSTORE_BASE64: ${{ secrets.KEYSTORE_BASE64 }}
+        KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
+        KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
+      run: |
+        BUILD_TOOL_DIR=$(ls -d $ANDROID_HOME/build-tools/* | tail -1)
+        echo "$KEYSTORE_BASE64" | base64 --decode > keystore.jks
+        $BUILD_TOOLS_DIR/zipalign -v -p 4 app-release-unsigned.apk app-release-unsigned-aligned.apk
+        $BUILD_TOOL_DIR/apksigner sign \
+          --ks keystore.jks \
+          --ks-key-alias "$KEY_ALIAS" \
+          --ks-pass pass:"$KEY_PASSWORD" \
+          --key-pass pass:"$KEY_PASSWORD" \
+          --out android/app/build/outputs/apk/release/app-release-unsigned-aligned.apk \
+          app-release-signed.apk
+        rm keystore.jks
+
     - name: Upload build outputs
       uses: actions/upload-artifact@v7
       with:
-        name: app-release-unsigned.apk
-        path: android/app/build/outputs/apk/release/app-release-unsigned.apk
+        name: app-release-signed.apk
+        path: android/app/build/outputs/apk/release/app-release-signed.apk
         retention-days: 10
