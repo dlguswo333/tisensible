@@ -6,7 +6,11 @@ const SectionTitle = ({children}: PropsWithChildren) => {
 };
 
 const Section = ({children}: PropsWithChildren) => {
-  return <section className='rounded-xl p-3 bg-gray-50 dark:bg-gray-800'>{children}</section>;
+  return (
+    <section className='rounded-lg p-3 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-600'>
+      {children}
+    </section>
+  );
 };
 
 const SettingTitle = ({children}: PropsWithChildren) => {
@@ -14,18 +18,14 @@ const SettingTitle = ({children}: PropsWithChildren) => {
 };
 
 const Setting = ({children}: PropsWithChildren) => {
-  return (
-    <div className='py-4 flex flex-row justify-between items-center not-last:border-b border-gray-300 dark:border-gray-600'>
-      {children}
-    </div>
-  );
+  return <div className='py-4 flex flex-row justify-between items-center'>{children}</div>;
 };
 
 const SettingsContainer = () => {
   const {speedUnit, setSpeedUnit, speedUnitOptions} = useSpeedUnit();
 
   return (
-    <div className='size-full px-2 text-black dark:text-white'>
+    <div className='mx-auto size-full max-w-lg px-1 text-black dark:text-white'>
       <div>
         <h1 className='px-3 py-4 text-2xl font-bold'>Settings</h1>
       </div>
