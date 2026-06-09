@@ -27,7 +27,7 @@ const SettingsContainer = () => {
   return (
     <div className='mx-auto size-full max-w-lg px-1 text-black dark:text-white'>
       <div>
-        <h1 className='px-3 py-4 text-2xl font-bold'>Settings</h1>
+        <h1 className='px-3 py-3.5 text-2xl font-bold'>Settings</h1>
       </div>
       <Section>
         <SectionTitle>Speedometer</SectionTitle>

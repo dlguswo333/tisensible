@@ -28,7 +28,7 @@ const App = () => {
   }, []);
 
   return (
-    <div className='w-full h-full p-2 bg-white dark:bg-gray-900 relative flex flex-col items-stretch'>
+    <div className='w-full h-full px-2 bg-white dark:bg-gray-900 relative flex flex-col items-stretch'>
       <div className='h-full flex flex-col relative overflow-auto'>
         <div className='min-h-full flex-none flex flex-col'>
           <Routes>
