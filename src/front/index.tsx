@@ -7,6 +7,7 @@ import NavBar from './navBar/NavBar';
 import SettingsContainer from './SettingsContainer';
 import SpeedometerContainer from './SpeedometerContainer';
 import useUserAgreement from './useUserAgreement';
+import './i18n/index';
 
 const App = () => {
   useUserAgreement(true);
