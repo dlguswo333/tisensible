@@ -1,4 +1,7 @@
 import type {PropsWithChildren} from 'react';
+import {useTranslation} from 'react-i18next';
+import {langs} from './i18n';
+import useLang from './i18n/useLang';
 import useSpeedUnit from './useSpeedUnit';
 
 const SectionTitle = ({children}: PropsWithChildren) => {
@@ -7,7 +10,7 @@ const SectionTitle = ({children}: PropsWithChildren) => {
 
 const Section = ({children}: PropsWithChildren) => {
   return (
-    <section className='rounded-lg p-3 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-600'>
+    <section className='rounded-lg p-3 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-600 not-last-of-type:mb-9'>
       {children}
     </section>
   );
@@ -23,16 +26,38 @@ const Setting = ({children}: PropsWithChildren) => {
 
 const SettingsContainer = () => {
   const {speedUnit, setSpeedUnit, speedUnitOptions} = useSpeedUnit();
+  const {currentLang, setLang} = useLang();
+  const {t} = useTranslation();
 
   return (
     <div className='mx-auto size-full max-w-lg px-1 text-black dark:text-white'>
       <div>
-        <h1 className='px-3 py-3.5 text-2xl font-bold'>Settings</h1>
+        <h1 className='px-3 py-3.5 text-2xl font-bold'>{t('settings.title')}</h1>
       </div>
       <Section>
-        <SectionTitle>Speedometer</SectionTitle>
+        <SectionTitle>{t('settings.general')}</SectionTitle>
         <Setting>
-          <SettingTitle>Speed Unit</SettingTitle>
+          <SettingTitle>{t('settings.language')}</SettingTitle>
+          <select
+            className='p-1 border border-gray-300 dark:border-gray-600 rounded-lg'
+            value={currentLang}
+            onChange={(e) => {
+              const value = e.target.value;
+              setLang(value);
+            }}
+          >
+            {langs.map((option) => (
+              <option key={option} value={option}>
+                {t(option)}
+              </option>
+            ))}
+          </select>
+        </Setting>
+      </Section>
+      <Section>
+        <SectionTitle>{t('settings.speedometer')}</SectionTitle>
+        <Setting>
+          <SettingTitle>{t('settings.speedUnit')}</SettingTitle>
           <select
             className='p-1 border border-gray-300 dark:border-gray-600 rounded-lg'
             value={speedUnit}
