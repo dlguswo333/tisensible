@@ -32,12 +32,12 @@ const SettingsContainer = () => {
   return (
     <div className='mx-auto size-full max-w-lg px-1 text-black dark:text-white'>
       <div>
-        <h1 className='px-3 py-3.5 text-2xl font-bold'>Settings</h1>
+        <h1 className='px-3 py-3.5 text-2xl font-bold'>{t('settings.title')}</h1>
       </div>
       <Section>
-        <SectionTitle>General</SectionTitle>
+        <SectionTitle>{t('settings.general')}</SectionTitle>
         <Setting>
-          <SettingTitle>Language</SettingTitle>
+          <SettingTitle>{t('settings.language')}</SettingTitle>
           <select
             className='p-1 border border-gray-300 dark:border-gray-600 rounded-lg'
             value={currentLang}
@@ -55,9 +55,9 @@ const SettingsContainer = () => {
         </Setting>
       </Section>
       <Section>
-        <SectionTitle>Speedometer</SectionTitle>
+        <SectionTitle>{t('settings.speedometer')}</SectionTitle>
         <Setting>
-          <SettingTitle>Speed Unit</SettingTitle>
+          <SettingTitle>{t('settings.speedUnit')}</SettingTitle>
           <select
             className='p-1 border border-gray-300 dark:border-gray-600 rounded-lg'
             value={speedUnit}
