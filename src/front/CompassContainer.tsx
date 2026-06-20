@@ -1,9 +1,11 @@
+import {useTranslation} from 'react-i18next';
 import Compass from './Compass';
 import useCompassSensor from './useCompassSensor';
 import {getAzimuthString} from './util/string';
 
 const CompassContainer = () => {
   const {value} = useCompassSensor();
+  const {t} = useTranslation();
   const screenAngle = screen.orientation.angle;
   const rotate = value?.alpha ? (value.alpha - screenAngle + 360) % 360 : 0;
   const quantizedRotate = Math.round(rotate);
@@ -17,7 +19,9 @@ const CompassContainer = () => {
         {getAzimuthString(quantizedRotate).padEnd(2, ' ')}
         <div className='h-3' />
         <div className='text-xs flex flex-col items-center'>
-          <div>Screen Orientation: {screenAngle}°</div>
+          <div>
+            {t('compass.screenOrientation')}: {screenAngle}°
+          </div>
         </div>
       </div>
     </div>

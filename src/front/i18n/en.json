@@ -3,5 +3,6 @@
     "ko": "한국어",
     "navBar.compass": "Compass",
     "navBar.speedometer": "Speedometer",
-    "navBar.settings": "settings"
+    "navBar.settings": "settings",
+    "compass.screenOrientation": "Screen Orientation"
 }
