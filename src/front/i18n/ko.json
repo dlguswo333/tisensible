@@ -1,4 +1,6 @@
 {
+    "en": "English",
+    "ko": "한국어",
     "navBar.compass": "나침반",
     "navBar.speedometer": "속도계",
     "navBar.settings": "설정"

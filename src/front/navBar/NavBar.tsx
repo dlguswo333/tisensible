@@ -18,7 +18,7 @@ const Button = ({text, icon, to, replace}: ButtonProps) => {
       to={to}
       draggable={false}
       replace={replace}
-      className='border-gray-400 dark:border-gray-600 text-black dark:text-white not-last:border-r px-2 py-1 flex flex-col items-center justify-center text-[0.7rem] active:bg-sky-300/50 [&.active]:bg-sky-300/50 transition-colors'
+      className='border-gray-400 dark:border-gray-600 text-black dark:text-white not-last:border-r min-w-15 px-2 py-1 flex flex-col items-center justify-center text-[0.7rem] active:bg-sky-300/50 [&.active]:bg-sky-300/50 transition-colors'
     >
       <div className='size-7.5 grid place-items-center'>{icon}</div>
       {text}
