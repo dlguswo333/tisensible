@@ -1,4 +1,5 @@
 import dayjs from 'dayjs';
+import i18n from 'i18next';
 
 /**
  * Get 'N', 'NW' like azimuth strings from rotate (0<=rotate<360).
@@ -21,16 +22,16 @@ export const getLongitudeSuffix = (longitude: number) => {
 export const getRelativeTime = (date: Date, baseDate: Date) => {
   const diffSecond = dayjs(baseDate).diff(dayjs(date), 'second');
   if (diffSecond <= 3) {
-    return 'Now';
+    return i18n.t('date.now');
   }
   if (diffSecond <= 120) {
-    return `${diffSecond} seconds ago`;
+    return i18n.t('date.nSecondsAgo', {n: diffSecond});
   }
   if (diffSecond <= 240) {
     const diffMinute = Math.floor(diffSecond / 60);
-    return `${diffMinute} minutes ago`;
+    return i18n.t('date.nMinutesAgo', {n: diffMinute});
   }
-  return 'A while ago';
+  return i18n.t('date.whilAgo');
 };
 
 export const addSuffix = (str: string | number | null | undefined, suffix: string) => {

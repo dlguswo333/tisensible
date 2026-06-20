@@ -4,5 +4,19 @@
     "navBar.compass": "Compass",
     "navBar.speedometer": "Speedometer",
     "navBar.settings": "settings",
-    "compass.screenOrientation": "Screen Orientation"
+    "compass.screenOrientation": "Screen Orientation",
+    "speedometer.noGpsPermission": "⚠️ The permission has not been granted. Please grant the GPS permission from app settings.",
+    "speedometer.gpsError": "⚠️ GPS trackng has been failed. Check the GPS permission or status.",
+    "speedometer.lastUpdate": "last update",
+    "speedometer.speed": "speed",
+    "speedometer.accuracy": "accuracy",
+    "speedometer.latitude": "latitude",
+    "speedometer.longitude": "longitude",
+    "speedometer.altitude": "altitude",
+    "speedometer.altitudeAccuracy": "altitude accuracy",
+    "speedometer.notAvailable": "not available",
+    "date.now": "Now",
+    "date.nSecondsAgo": "{{n}} seconds ago",
+    "date.nMinutesAgo": "{{n}} minutes ago",
+    "date.whilAgo": "A while ago"
 }

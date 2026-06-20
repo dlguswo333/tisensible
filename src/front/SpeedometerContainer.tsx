@@ -1,3 +1,4 @@
+import {useTranslation} from 'react-i18next';
 import Speedometer from './Speedometer';
 import useCurrentDate from './useCurrentDate';
 import useSpeedometerSensor from './useSpeedometerSensor';
@@ -35,7 +36,7 @@ const StartButton = ({onClick}: ButtonProps) => {
         className='w-full h-full fill-green-500 drop-shadow-xs drop-shadow-green-500/30 overflow-visible'
         viewBox='0 0 100 100'
       >
-        <title>Stop</title>
+        <title>Start</title>
         <polygon points='20,15 20,85, 80,50' />
       </svg>
     </button>
@@ -43,6 +44,7 @@ const StartButton = ({onClick}: ButtonProps) => {
 };
 
 const SpeedometerContainer = () => {
+  const {t} = useTranslation();
   const {isEnabled, hasPermission, requestPermission, setIsEnabled, value, lastUpdateDate, error} =
     useSpeedometerSensor();
   const currentDate = useCurrentDate(1000);
@@ -70,31 +72,31 @@ const SpeedometerContainer = () => {
         )}
       </div>
       <div className='pt-5 text-red-400 grid place-items-center gap-y-2 text-sm font-bold whitespace-break-spaces text-center'>
-        {hasPermission === false && (
-          <div>⚠️ The permission has not been granted. Please grant the GPS permission from app settings.</div>
-        )}
-        {error !== null && <div>⚠️ GPS trackng has been failed. Check the GPS permission or status.</div>}
+        {hasPermission === false && <div>{t('speedometer.noGpsPermission')}</div>}
+        {error !== null && <div>{t('speedometer.gpsError')}</div>}
       </div>
       {value !== null && (
         <div className='mx-auto p-3 pb-0 w-fit max-w-full grid grid-cols-2 gap-x-1 text-sm overflow-hidden *:whitespace-nowrap *:text-ellipsis *:overflow-hidden'>
-          <div>last update:</div>
+          <div>{t('speedometer.lastUpdate')}:</div>
           <div>{getRelativeTime(lastUpdateDate, currentDate)}</div>
-          <div>speed:</div>
-          <div>{addSuffix(value.coords.speed, 'm/s') ?? 'not available'}</div>
-          <div>accuracy:</div>
-          <div>{addSuffix(value.coords.accuracy, 'm') ?? 'not available'}</div>
-          <div>latitude:</div>
+          <div>{t('speedometer.speed')}:</div>
+          <div>{addSuffix(value.coords.speed, 'm/s') ?? t('speedometer.notAvailable')}</div>
+          <div>{t('speedometer.accuracy')}:</div>
+          <div>{addSuffix(value.coords.accuracy, 'm') ?? t('speedometer.notAvailable')}</div>
+          <div>{t('speedometer.latitude')}:</div>
           <div>
-            {addSuffix(Math.abs(value.coords.latitude), getLatitudeSuffix(value.coords.latitude)) ?? 'not available'}
+            {addSuffix(Math.abs(value.coords.latitude), getLatitudeSuffix(value.coords.latitude)) ??
+              t('speedometer.notAvailable')}
           </div>
-          <div>longitude:</div>
+          <div>{t('speedometer.longitude')}:</div>
           <div>
-            {addSuffix(Math.abs(value.coords.longitude), getLongitudeSuffix(value.coords.longitude)) ?? 'not available'}
+            {addSuffix(Math.abs(value.coords.longitude), getLongitudeSuffix(value.coords.longitude)) ??
+              t('speedometer.notAvailable')}
           </div>
-          <div>altitude:</div>
-          <div>{addSuffix(value.coords.altitude, 'm') ?? 'not available'}</div>
-          <div>altitude accuracy:</div>
-          <div>{addSuffix(value.coords.altitudeAccuracy, 'm') ?? 'not available'}</div>
+          <div>{t('speedometer.altitude')}:</div>
+          <div>{addSuffix(value.coords.altitude, 'm') ?? t('speedometer.notAvailable')}</div>
+          <div>{t('speedometer.altitudeAccuracy')}:</div>
+          <div>{addSuffix(value.coords.altitudeAccuracy, 'm') ?? t('speedometer.notAvailable')}</div>
         </div>
       )}
     </div>
