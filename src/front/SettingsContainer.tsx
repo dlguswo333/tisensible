@@ -2,6 +2,8 @@ import type {PropsWithChildren} from 'react';
 import {useTranslation} from 'react-i18next';
 import {langs} from './i18n';
 import useLang from './i18n/useLang';
+import {themes} from './theme/index';
+import useTheme from './theme/useTheme';
 import useSpeedUnit from './useSpeedUnit';
 
 const SectionTitle = ({children}: PropsWithChildren) => {
@@ -27,6 +29,7 @@ const Setting = ({children}: PropsWithChildren) => {
 const SettingsContainer = () => {
   const {speedUnit, setSpeedUnit, speedUnitOptions} = useSpeedUnit();
   const {currentLang, setLang} = useLang();
+  const {currentTheme, setTheme} = useTheme();
   const {t} = useTranslation();
 
   return (
@@ -49,6 +52,23 @@ const SettingsContainer = () => {
             {langs.map((option) => (
               <option key={option} value={option}>
                 {t(option)}
+              </option>
+            ))}
+          </select>
+        </Setting>
+        <Setting>
+          <SettingTitle>{t('settings.theme')}</SettingTitle>
+          <select
+            className='p-1 border border-gray-300 dark:border-gray-600 rounded-lg'
+            value={currentTheme}
+            onChange={(e) => {
+              const value = e.target.value;
+              setTheme(value);
+            }}
+          >
+            {themes.map((option) => (
+              <option key={option} value={option}>
+                {t(`settings.${option}`)}
               </option>
             ))}
           </select>
