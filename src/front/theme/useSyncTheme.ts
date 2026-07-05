@@ -1,25 +1,19 @@
 import {useAtomValue} from 'jotai';
 import {useEffect} from 'react';
-import {preferDarkMediaQuery, themeAtom} from '.';
+import {applyTheme, preferDarkMediaQuery, themeAtom} from '.';
 
 const useSyncTheme = () => {
   const currentTheme = useAtomValue(themeAtom);
 
   useEffect(() => {
-    const onChange = (event: MediaQueryListEvent) => {
-      if (currentTheme !== 'system') {
-        return;
-      }
-      if (event.matches) {
-        document.body.classList.add('dark');
-      } else {
-        document.body.classList.remove('dark');
-      }
+    const syncTheme = (event: MediaQueryListEvent | MediaQueryList) => {
+      applyTheme(currentTheme, event);
     };
-    preferDarkMediaQuery.addEventListener('change', onChange);
 
+    syncTheme(preferDarkMediaQuery);
+    preferDarkMediaQuery.addEventListener('change', syncTheme);
     return () => {
-      preferDarkMediaQuery.removeEventListener('change', onChange);
+      preferDarkMediaQuery.removeEventListener('change', syncTheme);
     };
   }, [currentTheme]);
 };
