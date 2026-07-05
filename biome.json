@@ -32,6 +32,11 @@
             "indentWidth": 2
         }
     },
+    "css": {
+        "parser": {
+            "tailwindDirectives": true
+        }
+    },
     "assist": {
         "enabled": true,
         "actions": {

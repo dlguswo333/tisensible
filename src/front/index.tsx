@@ -8,9 +8,11 @@ import SettingsContainer from './SettingsContainer';
 import SpeedometerContainer from './SpeedometerContainer';
 import useUserAgreement from './useUserAgreement';
 import './i18n/index';
+import useSyncTheme from './theme/useSyncTheme';
 
 const App = () => {
   useUserAgreement(true);
+  useSyncTheme();
 
   useEffect(() => {
     const registerBackButtonListener = () => {

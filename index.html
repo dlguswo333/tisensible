@@ -9,5 +9,17 @@
   <script type="module" src="/src/front/index.tsx"></script>
 </head>
 <body>
+  <script>
+    const systemTheme = window.matchMedia('(prefers-color-scheme:dark)').matches ? 'dark' : 'light';
+    try {
+      const storedValue = localStorage.getItem('theme') || 'null';
+      const currentTheme = storedValue === 'light' || storedValue === 'dark' ? storedValue : systemTheme;
+      if (currentTheme === 'dark') {
+        document.body.classList.add(currentTheme);
+      }
+    } catch {
+      document.body.classList.add(systemTheme);
+    }
+  </script>
 </body>
 </html>
