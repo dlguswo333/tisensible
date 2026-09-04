@@ -4,7 +4,7 @@ import useCurrentDate from './useCurrentDate';
 import useSpeedometerSensor from './useSpeedometerSensor';
 import useSpeedUnit from './useSpeedUnit';
 import {calculateSpeedInUnit} from './util/speed';
-import {addSuffix, getLatitudeSuffix, getLongitudeSuffix, getRelativeTime} from './util/string';
+import {addSuffix, getLatitudeSuffix, getLongitudeSuffix, getRelativeTime, roundFractionDigits} from './util/string';
 
 type ButtonProps = {
   onClick: () => unknown;
@@ -80,9 +80,9 @@ const SpeedometerContainer = () => {
           <div>{t('speedometer.lastUpdate')}:</div>
           <div>{getRelativeTime(lastUpdateDate, currentDate)}</div>
           <div>{t('speedometer.speed')}:</div>
-          <div>{addSuffix(value.coords.speed, 'm/s') ?? t('speedometer.notAvailable')}</div>
+          <div>{addSuffix(roundFractionDigits(value.coords.speed, 6), 'm/s') ?? t('speedometer.notAvailable')}</div>
           <div>{t('speedometer.accuracy')}:</div>
-          <div>{addSuffix(value.coords.accuracy, 'm') ?? t('speedometer.notAvailable')}</div>
+          <div>{addSuffix(roundFractionDigits(value.coords.accuracy, 6), 'm') ?? t('speedometer.notAvailable')}</div>
           <div>{t('speedometer.latitude')}:</div>
           <div>
             {addSuffix(Math.abs(value.coords.latitude), getLatitudeSuffix(value.coords.latitude)) ??
@@ -94,9 +94,11 @@ const SpeedometerContainer = () => {
               t('speedometer.notAvailable')}
           </div>
           <div>{t('speedometer.altitude')}:</div>
-          <div>{addSuffix(value.coords.altitude, 'm') ?? t('speedometer.notAvailable')}</div>
+          <div>{addSuffix(roundFractionDigits(value.coords.altitude, 6), 'm') ?? t('speedometer.notAvailable')}</div>
           <div>{t('speedometer.altitudeAccuracy')}:</div>
-          <div>{addSuffix(value.coords.altitudeAccuracy, 'm') ?? t('speedometer.notAvailable')}</div>
+          <div>
+            {addSuffix(roundFractionDigits(value.coords.altitudeAccuracy, 6), 'm') ?? t('speedometer.notAvailable')}
+          </div>
         </div>
       )}
     </div>

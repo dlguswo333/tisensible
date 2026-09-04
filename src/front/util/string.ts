@@ -40,3 +40,19 @@ export const addSuffix = (str: string | number | null | undefined, suffix: strin
   }
   return `${str}${suffix}`;
 };
+
+export const roundFractionDigits = (number: number | null | undefined, targetDigitsLen: number) => {
+  if (number === null || number === undefined) {
+    return number;
+  }
+  const numberStr = number.toString();
+  const isExponential = /e/i.test(numberStr);
+  if (isExponential) {
+    return numberStr;
+  }
+  const fractionStrLen = (numberStr.split('.')[1] ?? '').length;
+  if (fractionStrLen <= targetDigitsLen) {
+    return number.toString();
+  }
+  return number.toFixed(targetDigitsLen);
+};
