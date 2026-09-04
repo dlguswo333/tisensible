@@ -17,7 +17,7 @@
         "zod": "^4.3.6"
     },
     "name": "tisensible",
-    "version": "0.0.3",
+    "version": "0.0.4",
     "description": "Utility application for showing values from sensors",
     "main": "index.js",
     "devDependencies": {
