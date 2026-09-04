@@ -33,9 +33,9 @@ const SettingsContainer = () => {
   const {t} = useTranslation();
 
   return (
-    <div className='mx-auto size-full max-w-lg px-1 text-black dark:text-white'>
+    <div className='mx-auto size-full max-w-lg px-4 text-black dark:text-white'>
       <div>
-        <h1 className='px-3 py-3.5 text-2xl font-bold'>{t('settings.title')}</h1>
+        <h1 className='py-3.5 text-2xl font-bold'>{t('settings.title')}</h1>
       </div>
       <Section>
         <SectionTitle>{t('settings.general')}</SectionTitle>
