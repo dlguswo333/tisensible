@@ -76,28 +76,30 @@ const SpeedometerContainer = () => {
         {error !== null && <div>{t('speedometer.gpsError')}</div>}
       </div>
       {value !== null && (
-        <div className='mx-auto p-3 pb-0 w-fit max-w-full grid grid-cols-2 gap-x-1 text-sm overflow-hidden *:whitespace-nowrap *:text-ellipsis *:overflow-hidden'>
-          <div>{t('speedometer.lastUpdate')}:</div>
-          <div>{getRelativeTime(lastUpdateDate, currentDate)}</div>
-          <div>{t('speedometer.speed')}:</div>
-          <div>{addSuffix(roundFractionDigits(value.coords.speed, 6), 'm/s') ?? t('speedometer.notAvailable')}</div>
-          <div>{t('speedometer.accuracy')}:</div>
-          <div>{addSuffix(roundFractionDigits(value.coords.accuracy, 6), 'm') ?? t('speedometer.notAvailable')}</div>
-          <div>{t('speedometer.latitude')}:</div>
-          <div>
-            {addSuffix(Math.abs(value.coords.latitude), getLatitudeSuffix(value.coords.latitude)) ??
-              t('speedometer.notAvailable')}
-          </div>
-          <div>{t('speedometer.longitude')}:</div>
-          <div>
-            {addSuffix(Math.abs(value.coords.longitude), getLongitudeSuffix(value.coords.longitude)) ??
-              t('speedometer.notAvailable')}
-          </div>
-          <div>{t('speedometer.altitude')}:</div>
-          <div>{addSuffix(roundFractionDigits(value.coords.altitude, 6), 'm') ?? t('speedometer.notAvailable')}</div>
-          <div>{t('speedometer.altitudeAccuracy')}:</div>
-          <div>
-            {addSuffix(roundFractionDigits(value.coords.altitudeAccuracy, 6), 'm') ?? t('speedometer.notAvailable')}
+        <div className='w-[90%] max-w-md mx-auto p-3 pb-0'>
+          <div className='grid grid-cols-2 gap-1 text-sm overflow-hidden *:whitespace-nowrap *:text-ellipsis *:overflow-hidden'>
+            <div>{t('speedometer.lastUpdate')}:</div>
+            <div>{getRelativeTime(lastUpdateDate, currentDate)}</div>
+            <div>{t('speedometer.speed')}:</div>
+            <div>{addSuffix(roundFractionDigits(value.coords.speed, 6), 'm/s') ?? t('speedometer.notAvailable')}</div>
+            <div>{t('speedometer.accuracy')}:</div>
+            <div>{addSuffix(roundFractionDigits(value.coords.accuracy, 6), 'm') ?? t('speedometer.notAvailable')}</div>
+            <div>{t('speedometer.latitude')}:</div>
+            <div>
+              {addSuffix(Math.abs(value.coords.latitude), getLatitudeSuffix(value.coords.latitude)) ??
+                t('speedometer.notAvailable')}
+            </div>
+            <div>{t('speedometer.longitude')}:</div>
+            <div>
+              {addSuffix(Math.abs(value.coords.longitude), getLongitudeSuffix(value.coords.longitude)) ??
+                t('speedometer.notAvailable')}
+            </div>
+            <div>{t('speedometer.altitude')}:</div>
+            <div>{addSuffix(roundFractionDigits(value.coords.altitude, 6), 'm') ?? t('speedometer.notAvailable')}</div>
+            <div>{t('speedometer.altitudeAccuracy')}:</div>
+            <div>
+              {addSuffix(roundFractionDigits(value.coords.altitudeAccuracy, 6), 'm') ?? t('speedometer.notAvailable')}
+            </div>
           </div>
         </div>
       )}
