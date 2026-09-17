@@ -57,7 +57,7 @@ const SpeedometerContainer = () => {
         <Speedometer value={speed ?? null} />
         <div className='pt-2 px-3 self-end text-right text-base'>{speedUnit}</div>
       </div>
-      <div className='py-8 grid place-items-center'>
+      <div className='py-6 grid place-items-center'>
         {isEnabled ? (
           <StopButton onClick={() => setIsEnabled(false)} />
         ) : (
