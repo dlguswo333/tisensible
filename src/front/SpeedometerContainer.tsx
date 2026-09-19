@@ -89,10 +89,12 @@ const SpeedometerContainer = () => {
           />
         )}
       </div>
-      <div className='pt-5 text-red-400 grid place-items-center gap-y-2 text-sm font-bold whitespace-break-spaces text-center'>
-        {hasPermission === false && <div>{t('speedometer.noGpsPermission')}</div>}
-        {error !== null && <div>{t('speedometer.gpsError')}</div>}
-      </div>
+      {(hasPermission === false || error !== null) && (
+        <div className='pt-5 text-red-400 grid place-items-center gap-y-2 text-sm font-bold whitespace-break-spaces text-center'>
+          {hasPermission === false && <div>{t('speedometer.noGpsPermission')}</div>}
+          {error !== null && <div>{t('speedometer.gpsError')}</div>}
+        </div>
+      )}
       {value !== null && (
         <div className='w-[90%] max-w-xl mx-auto p-3 pb-0'>
           <div className='grid grid-cols-2 md:grid-cols-4 gap-2 text-sm overflow-hidden *:whitespace-nowrap *:text-ellipsis *:overflow-hidden'>
