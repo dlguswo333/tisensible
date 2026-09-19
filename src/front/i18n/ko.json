@@ -14,6 +14,7 @@
     "speedometer.longitude": "경도",
     "speedometer.altitude": "고도",
     "speedometer.altitudeAccuracy": "고도 정확도",
+    "speedometer.travelDirection": "이동 방향",
     "speedometer.notAvailable": "주어지지 않음",
     "settings.title": "설정",
     "settings.general": "일반",

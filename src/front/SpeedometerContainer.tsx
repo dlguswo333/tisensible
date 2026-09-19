@@ -4,7 +4,7 @@ import useCurrentDate from './useCurrentDate';
 import useSpeedometerSensor from './useSpeedometerSensor';
 import useSpeedUnit from './useSpeedUnit';
 import {calculateSpeedInUnit} from './util/speed';
-import {addSuffix, getLatitudeSuffix, getLongitudeSuffix, getRelativeTime} from './util/string';
+import {addSuffix, getAzimuthString, getLatitudeSuffix, getLongitudeSuffix, getRelativeTime} from './util/string';
 
 type ButtonProps = {
   onClick: () => unknown;
@@ -97,6 +97,12 @@ const SpeedometerContainer = () => {
           <div>{addSuffix(value.coords.altitude, 'm') ?? t('speedometer.notAvailable')}</div>
           <div>{t('speedometer.altitudeAccuracy')}:</div>
           <div>{addSuffix(value.coords.altitudeAccuracy, 'm') ?? t('speedometer.notAvailable')}</div>
+          <div>{t('speedometer.travelDirection')}:</div>
+          <div>
+            {value.coords.course
+              ? addSuffix(value.coords.course, '° ') + getAzimuthString(value.coords.course)
+              : t('speedometer.notAvailable')}
+          </div>
         </div>
       )}
     </div>
