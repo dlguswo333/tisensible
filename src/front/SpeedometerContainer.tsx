@@ -96,7 +96,6 @@ const SpeedometerContainer = () => {
       {value !== null && (
         <div className='w-[90%] max-w-xl mx-auto p-3 pb-0'>
           <div className='grid grid-cols-2 md:grid-cols-4 gap-2 text-sm overflow-hidden *:whitespace-nowrap *:text-ellipsis *:overflow-hidden'>
-            <DetailInfoItem label={t('speedometer.lastUpdate')} value={getRelativeTime(lastUpdateDate, currentDate)} />
             <DetailInfoItem
               label={t('speedometer.speed')}
               value={addSuffix(roundFractionDigits(value.coords.speed, 6), 'm/s') ?? t('speedometer.notAvailable')}
@@ -129,6 +128,7 @@ const SpeedometerContainer = () => {
                 addSuffix(roundFractionDigits(value.coords.altitudeAccuracy, 6), 'm') ?? t('speedometer.notAvailable')
               }
             />
+            <DetailInfoItem label={t('speedometer.lastUpdate')} value={getRelativeTime(lastUpdateDate, currentDate)} />
           </div>
         </div>
       )}
