@@ -9,6 +9,7 @@ import {addSuffix, getLatitudeSuffix, getLongitudeSuffix, getRelativeTime, round
 type ButtonProps = {
   onClick: () => unknown;
 };
+
 const StopButton = ({onClick}: ButtonProps) => {
   return (
     <button
@@ -40,6 +41,23 @@ const StartButton = ({onClick}: ButtonProps) => {
         <polygon points='20,15 20,85, 80,50' />
       </svg>
     </button>
+  );
+};
+
+type DetailInfoItemProps = {
+  label: string;
+  value: string;
+};
+
+const DetailInfoItem = ({label, value}: DetailInfoItemProps) => {
+  const id = `detailInfoId-${label}`;
+  return (
+    <div>
+      <label htmlFor={id} className='font-bold'>
+        {label}
+      </label>
+      <div id={id}>{value}</div>
+    </div>
   );
 };
 
@@ -76,30 +94,41 @@ const SpeedometerContainer = () => {
         {error !== null && <div>{t('speedometer.gpsError')}</div>}
       </div>
       {value !== null && (
-        <div className='w-[90%] max-w-md mx-auto p-3 pb-0'>
-          <div className='grid grid-cols-2 gap-1 text-sm overflow-hidden *:whitespace-nowrap *:text-ellipsis *:overflow-hidden'>
-            <div>{t('speedometer.lastUpdate')}:</div>
-            <div>{getRelativeTime(lastUpdateDate, currentDate)}</div>
-            <div>{t('speedometer.speed')}:</div>
-            <div>{addSuffix(roundFractionDigits(value.coords.speed, 6), 'm/s') ?? t('speedometer.notAvailable')}</div>
-            <div>{t('speedometer.accuracy')}:</div>
-            <div>{addSuffix(roundFractionDigits(value.coords.accuracy, 6), 'm') ?? t('speedometer.notAvailable')}</div>
-            <div>{t('speedometer.latitude')}:</div>
-            <div>
-              {addSuffix(Math.abs(value.coords.latitude), getLatitudeSuffix(value.coords.latitude)) ??
-                t('speedometer.notAvailable')}
-            </div>
-            <div>{t('speedometer.longitude')}:</div>
-            <div>
-              {addSuffix(Math.abs(value.coords.longitude), getLongitudeSuffix(value.coords.longitude)) ??
-                t('speedometer.notAvailable')}
-            </div>
-            <div>{t('speedometer.altitude')}:</div>
-            <div>{addSuffix(roundFractionDigits(value.coords.altitude, 6), 'm') ?? t('speedometer.notAvailable')}</div>
-            <div>{t('speedometer.altitudeAccuracy')}:</div>
-            <div>
-              {addSuffix(roundFractionDigits(value.coords.altitudeAccuracy, 6), 'm') ?? t('speedometer.notAvailable')}
-            </div>
+        <div className='w-[90%] max-w-xl mx-auto p-3 pb-0'>
+          <div className='grid grid-cols-2 md:grid-cols-4 gap-2 text-sm overflow-hidden *:whitespace-nowrap *:text-ellipsis *:overflow-hidden'>
+            <DetailInfoItem label={t('speedometer.lastUpdate')} value={getRelativeTime(lastUpdateDate, currentDate)} />
+            <DetailInfoItem
+              label={t('speedometer.speed')}
+              value={addSuffix(roundFractionDigits(value.coords.speed, 6), 'm/s') ?? t('speedometer.notAvailable')}
+            />
+            <DetailInfoItem
+              label={t('speedometer.accuracy')}
+              value={addSuffix(roundFractionDigits(value.coords.accuracy, 6), 'm') ?? t('speedometer.notAvailable')}
+            />
+            <DetailInfoItem
+              label={t('speedometer.latitude')}
+              value={
+                addSuffix(Math.abs(value.coords.latitude), getLatitudeSuffix(value.coords.latitude)) ??
+                t('speedometer.notAvailable')
+              }
+            />
+            <DetailInfoItem
+              label={t('speedometer.longitude')}
+              value={
+                addSuffix(Math.abs(value.coords.longitude), getLongitudeSuffix(value.coords.longitude)) ??
+                t('speedometer.notAvailable')
+              }
+            />
+            <DetailInfoItem
+              label={t('speedometer.altitude')}
+              value={addSuffix(roundFractionDigits(value.coords.altitude, 6), 'm') ?? t('speedometer.notAvailable')}
+            />
+            <DetailInfoItem
+              label={t('speedometer.altitudeAccuracy')}
+              value={
+                addSuffix(roundFractionDigits(value.coords.altitudeAccuracy, 6), 'm') ?? t('speedometer.notAvailable')
+              }
+            />
           </div>
         </div>
       )}
