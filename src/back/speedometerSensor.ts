@@ -2,6 +2,7 @@ import {Capacitor} from '@capacitor/core';
 import {type CallbackID, Geolocation, type Position} from '@capacitor/geolocation';
 import {toMerged} from 'es-toolkit';
 import {v4} from 'uuid';
+import {getDirection} from '../front/util/coordinate';
 import {getSpeedWithHaversine} from '../front/util/speed';
 
 export type SpeedometerValue =
@@ -16,6 +17,12 @@ export type SpeedometerValue =
       status: 'error';
       error: Error;
     };
+
+const mergePositions = (target: Position, source: Partial<Position['coords']>) => {
+  // Using JSON because using directy or cloning Position fails because of getter only properties.
+  const updatedPosition = toMerged(JSON.parse(JSON.stringify(target)), {coords: source});
+  return updatedPosition as Position;
+};
 
 class SpeedometerSensor {
   private subscribers: Record<string, (_: SpeedometerValue) => unknown> = {};
@@ -104,9 +111,14 @@ class SpeedometerSensor {
           // Since speed is not provided, calculate speed using the previous position.
           const elapsedSec = (position.timestamp - this.prevPosition.timestamp) / 1000;
           const speed = getSpeedWithHaversine(this.prevPosition.coords, position.coords, elapsedSec);
-          // Using JSON because using directy or cloning Position fails because of getter only properties.
-          const updatedPosition = toMerged(JSON.parse(JSON.stringify(position)), {coords: {speed}});
-          position = updatedPosition as Position;
+          const updatedPosition = mergePositions(position, {speed});
+          position = updatedPosition;
+        }
+
+        if (this.prevPosition !== null && (position.coords.course === null || position.coords.course === undefined)) {
+          const course = getDirection(this.prevPosition.coords, position.coords);
+          const updatedPosition = mergePositions(position, {course});
+          position = updatedPosition;
         }
 
         // At the first time, the following code will set [prev, cur] = [null, a]
