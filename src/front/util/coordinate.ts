@@ -54,6 +54,6 @@ export const getDirection = (from: Coord, to: Coord): number => {
   const direction = getAngleFromRadian(
     Math.atan2(longitudeDiff.sign * longitudeDiff.dist, latitudeDiff.sign * latitudeDiff.dist),
   );
-  const normalizedDirection = (direction + FULL_CIRCLE_DEGREES) % FULL_CIRCLE_DEGREES;
+  const normalizedDirection = (Math.round(direction) + FULL_CIRCLE_DEGREES) % FULL_CIRCLE_DEGREES;
   return normalizedDirection;
 };
