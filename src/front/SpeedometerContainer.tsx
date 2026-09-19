@@ -100,7 +100,7 @@ const SpeedometerContainer = () => {
           <div>{t('speedometer.travelDirection')}:</div>
           <div>
             {value.coords.course
-              ? addSuffix(value.coords.course, '° ') + getAzimuthString(value.coords.course)
+              ? addSuffix(value.coords.course, '° ') + getAzimuthString(value.coords.course, true)
               : t('speedometer.notAvailable')}
           </div>
         </div>

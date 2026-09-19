@@ -1,12 +1,14 @@
 import dayjs from 'dayjs';
 import i18n from 'i18next';
 
+const COUNTER_CLOCKWISE_AZIMUTH_STR = ['N', 'NW', 'W', 'SW', 'S', 'SE', 'E', 'NE'];
+const CLOCKWISE_AZIMUTH_STR = ['N', 'NE', 'E', 'SE', 'S', 'SW', 'W', 'NW'];
 /**
  * Get 'N', 'NW' like azimuth strings from rotate (0<=rotate<360).
  * Provides 8 distinct values.
  */
-export const getAzimuthString = (rotate: number) => {
-  const azimuths = ['N', 'NW', 'W', 'SW', 'S', 'SE', 'E', 'NE'];
+export const getAzimuthString = (rotate: number, clockwise: boolean) => {
+  const azimuths = clockwise ? CLOCKWISE_AZIMUTH_STR : COUNTER_CLOCKWISE_AZIMUTH_STR;
   const ind = Math.floor(((rotate + 22.5) / 45) % 8);
   return azimuths[ind];
 };
