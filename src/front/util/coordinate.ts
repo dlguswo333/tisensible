@@ -1,6 +1,6 @@
 const EARTH_RADIUS = 6371000;
 
-type Coord = {
+export type Coord = {
   latitude: number;
   longitude: number;
 };
