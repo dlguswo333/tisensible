@@ -2,7 +2,7 @@ import {Capacitor} from '@capacitor/core';
 import {type CallbackID, Geolocation, type Position} from '@capacitor/geolocation';
 import {toMerged} from 'es-toolkit';
 import {v4} from 'uuid';
-import {getDirection} from '../front/util/coordinate';
+import {getDirection, getDistWithHaversine} from '../front/util/coordinate';
 import {getSpeedWithHaversine} from '../front/util/speed';
 
 export type SpeedometerValue =
@@ -17,6 +17,8 @@ export type SpeedometerValue =
       status: 'error';
       error: Error;
     };
+
+const MIN_COURSE_DISTANCE_ACCURACY_RATIO = 2;
 
 const mergePositions = (target: Position, source: Partial<Position['coords']>) => {
   // Using JSON because using directy or cloning Position fails because of getter only properties.
@@ -115,7 +117,13 @@ class SpeedometerSensor {
           position = updatedPosition;
         }
 
-        if (this.prevPosition !== null && (position.coords.course === null || position.coords.course === undefined)) {
+        if (
+          this.prevPosition !== null &&
+          (position.coords.course === null || position.coords.course === undefined) &&
+          getDistWithHaversine(this.prevPosition.coords, position.coords) /
+            (this.prevPosition.coords.accuracy + position.coords.accuracy) >=
+            MIN_COURSE_DISTANCE_ACCURACY_RATIO
+        ) {
           const course = getDirection(this.prevPosition.coords, position.coords);
           const updatedPosition = mergePositions(position, {course});
           position = updatedPosition;
