@@ -4,12 +4,14 @@ import i18n from 'i18next';
 const COUNTER_CLOCKWISE_AZIMUTH_STR = ['N', 'NW', 'W', 'SW', 'S', 'SE', 'E', 'NE'];
 const CLOCKWISE_AZIMUTH_STR = ['N', 'NE', 'E', 'SE', 'S', 'SW', 'W', 'NW'];
 /**
- * Get 'N', 'NW' like azimuth strings from rotate (0<=rotate<360).
+ * Get 'N', 'NW' like azimuth strings from the angle.
  * Provides 8 distinct values.
+ * @param angle Angle in degree in [0, 360).
+ * @param clockwise Does `angle` increase clockwise from north?
  */
-export const getAzimuthString = (rotate: number, clockwise: boolean) => {
+export const getAzimuthString = (angle: number, clockwise: boolean) => {
   const azimuths = clockwise ? CLOCKWISE_AZIMUTH_STR : COUNTER_CLOCKWISE_AZIMUTH_STR;
-  const ind = Math.floor(((rotate + 22.5) / 45) % 8);
+  const ind = Math.floor(((angle + 22.5) / 45) % 8);
   return azimuths[ind];
 };
 
