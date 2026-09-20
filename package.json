@@ -4,7 +4,7 @@
         "@capacitor/app": "^8.0.1",
         "@capacitor/core": "^8.1.0",
         "@capacitor/dialog": "^8.0.1",
-        "@capacitor/geolocation": "^8.1.0",
+        "@capacitor/geolocation": "^8.2.2",
         "dayjs": "^1.11.19",
         "es-toolkit": "^1.44.0",
         "i18next": "^26.3.1",
