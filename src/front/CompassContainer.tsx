@@ -16,7 +16,7 @@ const CompassContainer = () => {
       <div className='text-3xl pt-8 font-bold text-center font-mono text-black dark:text-white whitespace-pre-wrap'>
         {quantizedRotate.toString().padStart(3, ' ')}
         {'° '}
-        {getAzimuthString(quantizedRotate).padEnd(2, ' ')}
+        {getAzimuthString(quantizedRotate, false).padEnd(2, ' ')}
         <div className='h-3' />
         <div className='text-xs flex flex-col items-center'>
           <div>
