@@ -53,17 +53,20 @@ const StartButton = ({onClick}: ButtonProps) => {
 
 type DetailInfoItemProps = {
   label: string;
-  value: string;
+  value: string | null;
 };
 
 const DetailInfoItem = ({label, value}: DetailInfoItemProps) => {
+  const {t} = useTranslation();
   const id = `detailInfoId-${label}`;
   return (
     <div>
-      <label htmlFor={id} className='font-bold'>
+      <label htmlFor={id} className={`${value === null ? 'text-gray-700/80 dark:text-gray-300/80' : ''} font-bold`}>
         {label}
       </label>
-      <div id={id}>{value}</div>
+      <div id={id} className={value === null ? 'text-gray-700/80 dark:text-gray-300/80' : undefined}>
+        {value ?? t('speedometer.notAvailable')}
+      </div>
     </div>
   );
 };
@@ -107,42 +110,34 @@ const SpeedometerContainer = () => {
           <div className='grid grid-cols-2 md:grid-cols-4 gap-2 text-sm overflow-hidden *:whitespace-nowrap *:text-ellipsis *:overflow-hidden'>
             <DetailInfoItem
               label={t('speedometer.speed')}
-              value={addSuffix(roundFractionDigits(value.coords.speed, 6), 'm/s') ?? t('speedometer.notAvailable')}
+              value={addSuffix(roundFractionDigits(value.coords.speed, 6), 'm/s') ?? null}
             />
             <DetailInfoItem
               label={t('speedometer.accuracy')}
-              value={addSuffix(roundFractionDigits(value.coords.accuracy, 6), 'm') ?? t('speedometer.notAvailable')}
+              value={addSuffix(roundFractionDigits(value.coords.accuracy, 6), 'm') ?? null}
             />
             <DetailInfoItem
               label={t('speedometer.latitude')}
-              value={
-                addSuffix(Math.abs(value.coords.latitude), getLatitudeSuffix(value.coords.latitude)) ??
-                t('speedometer.notAvailable')
-              }
+              value={addSuffix(Math.abs(value.coords.latitude), getLatitudeSuffix(value.coords.latitude)) ?? null}
             />
             <DetailInfoItem
               label={t('speedometer.longitude')}
-              value={
-                addSuffix(Math.abs(value.coords.longitude), getLongitudeSuffix(value.coords.longitude)) ??
-                t('speedometer.notAvailable')
-              }
+              value={addSuffix(Math.abs(value.coords.longitude), getLongitudeSuffix(value.coords.longitude)) ?? null}
             />
             <DetailInfoItem
               label={t('speedometer.altitude')}
-              value={addSuffix(roundFractionDigits(value.coords.altitude, 6), 'm') ?? t('speedometer.notAvailable')}
+              value={addSuffix(roundFractionDigits(value.coords.altitude, 6), 'm') ?? null}
             />
             <DetailInfoItem
               label={t('speedometer.altitudeAccuracy')}
-              value={
-                addSuffix(roundFractionDigits(value.coords.altitudeAccuracy, 6), 'm') ?? t('speedometer.notAvailable')
-              }
+              value={addSuffix(roundFractionDigits(value.coords.altitudeAccuracy, 6), 'm') ?? null}
             />
             <DetailInfoItem
               label={t('speedometer.travelDirection')}
               value={
                 value.coords.course !== null && value.coords.course !== undefined
                   ? addSuffix(value.coords.course, '° ') + getAzimuthString(value.coords.course, true)
-                  : t('speedometer.notAvailable')
+                  : null
               }
             />
             <DetailInfoItem label={t('speedometer.lastUpdate')} value={getRelativeTime(lastUpdateDate, currentDate)} />
