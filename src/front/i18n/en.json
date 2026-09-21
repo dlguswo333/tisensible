@@ -3,7 +3,7 @@
     "ko": "한국어",
     "navBar.compass": "Compass",
     "navBar.speedometer": "Speedometer",
-    "navBar.settings": "settings",
+    "navBar.settings": "Settings",
     "compass.screenOrientation": "Screen Orientation",
     "speedometer.noGpsPermission": "⚠️ The permission has not been granted. Please grant the GPS permission from app settings.",
     "speedometer.gpsError": "⚠️ GPS trackng has been failed. Check the GPS permission or status.",
