@@ -7,23 +7,25 @@ const CompassContainer = () => {
   const {value} = useCompassSensor();
   const {t} = useTranslation();
   const screenAngle = screen.orientation.angle;
-  const rotate = value?.alpha ? (value.alpha - screenAngle + 360) % 360 : 0;
-  const quantizedRotate = Math.round(rotate);
+  const rotate = value?.alpha ? (value.alpha - screenAngle + 360) % 360 : null;
+  const quantizedRotate = rotate !== null ? Math.round(rotate) : null;
 
   return (
     <div className='mt-auto mb-auto pt-[10vh] h-full overflow-auto'>
-      <Compass rotate={rotate ?? 0} />
-      <div className='text-3xl pt-8 font-bold text-center font-mono text-black dark:text-white whitespace-pre-wrap'>
-        {quantizedRotate.toString().padStart(3, ' ')}
-        {'° '}
-        {getAzimuthString(quantizedRotate, false).padEnd(2, ' ')}
-        <div className='h-3' />
-        <div className='text-xs flex flex-col items-center'>
-          <div>
-            {t('compass.screenOrientation')}: {screenAngle}°
+      <Compass rotate={rotate} />
+      {quantizedRotate !== null && (
+        <div className='text-3xl pt-8 font-bold text-center font-mono text-black dark:text-white whitespace-pre-wrap'>
+          {quantizedRotate.toString().padStart(3, ' ')}
+          {'° '}
+          {getAzimuthString(quantizedRotate, false).padEnd(2, ' ')}
+          <div className='h-3' />
+          <div className='text-xs flex flex-col items-center'>
+            <div>
+              {t('compass.screenOrientation')}: {screenAngle}°
+            </div>
           </div>
         </div>
-      </div>
+      )}
     </div>
   );
 };
