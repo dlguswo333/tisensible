@@ -13,6 +13,20 @@ import {
   roundFractionDigits,
 } from './util/string';
 
+const WARNING_LEVELS = {
+  ACCURACY: {
+    LOW: 10,
+    HIGH: 30,
+  },
+  ALTITUDE_ACCURACY: {
+    LOW: 20,
+    HIGH: 40,
+  },
+} as const;
+const getWarningLevel = (value: number, info: keyof typeof WARNING_LEVELS) => {
+  return value >= WARNING_LEVELS[info].HIGH ? 'HIGH' : value >= WARNING_LEVELS[info].LOW ? 'LOW' : null;
+};
+
 type ButtonProps = {
   onClick: () => unknown;
 };
@@ -54,17 +68,26 @@ const StartButton = ({onClick}: ButtonProps) => {
 type DetailInfoItemProps = {
   label: string;
   value: string | null;
+  warningLevel?: 'LOW' | 'HIGH' | null;
 };
 
-const DetailInfoItem = ({label, value}: DetailInfoItemProps) => {
+const DetailInfoItem = ({label, value, warningLevel}: DetailInfoItemProps) => {
   const {t} = useTranslation();
   const id = `detailInfoId-${label}`;
+  const textColorClassName =
+    value === null
+      ? 'text-gray-700/80 dark:text-gray-300/80'
+      : warningLevel === null || warningLevel === undefined
+        ? undefined
+        : warningLevel === 'LOW'
+          ? 'text-orange-400'
+          : 'text-red-600';
   return (
     <div>
-      <label htmlFor={id} className={`${value === null ? 'text-gray-700/80 dark:text-gray-300/80' : ''} font-bold`}>
+      <label htmlFor={id} className={`${textColorClassName} font-bold`}>
         {label}
       </label>
-      <div id={id} className={value === null ? 'text-gray-700/80 dark:text-gray-300/80' : undefined}>
+      <div id={id} className={textColorClassName}>
         {value ?? t('speedometer.notAvailable')}
       </div>
     </div>
@@ -115,6 +138,7 @@ const SpeedometerContainer = () => {
             <DetailInfoItem
               label={t('speedometer.accuracy')}
               value={addSuffix(roundFractionDigits(value.coords.accuracy, 6), 'm') ?? null}
+              warningLevel={getWarningLevel(value.coords.accuracy, 'ACCURACY')}
             />
             <DetailInfoItem
               label={t('speedometer.latitude')}
@@ -131,6 +155,11 @@ const SpeedometerContainer = () => {
             <DetailInfoItem
               label={t('speedometer.altitudeAccuracy')}
               value={addSuffix(roundFractionDigits(value.coords.altitudeAccuracy, 6), 'm') ?? null}
+              warningLevel={
+                value.coords.altitudeAccuracy !== null && value.coords.altitudeAccuracy !== undefined
+                  ? getWarningLevel(value.coords.altitudeAccuracy, 'ALTITUDE_ACCURACY')
+                  : null
+              }
             />
             <DetailInfoItem
               label={t('speedometer.travelDirection')}
