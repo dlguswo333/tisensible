@@ -109,7 +109,7 @@ const SpeedometerContainer = () => {
   return (
     <div className='my-auto pt-[10vh] h-full font-mono text-black dark:text-white'>
       <div
-        className='p-3 max-w-[90%] landscape:max-w-2xl flex flex-col content-start items-center mx-auto'
+        className='p-3 max-w-[90vmin] flex flex-col content-start items-center mx-auto'
         ref={speedometerOuterContainerElementRef}
       >
         <div className={`w-full origin-bottom transition ${shouldDownsizeSpeedometerInnerContainer ? 'scale-50' : ''}`}>
