@@ -40,7 +40,7 @@ const App = () => {
               element={
                 <>
                   <CompassContainer />
-                  <NavBar />
+                  <NavBar hide={false} />
                 </>
               }
             />
@@ -49,11 +49,19 @@ const App = () => {
               element={
                 <>
                   <SpeedometerContainer />
-                  <NavBar />
+                  <NavBar hide={false} />
                 </>
               }
             />
-            <Route path='settings' element={<SettingsContainer />} />
+            <Route
+              path='settings'
+              element={
+                <>
+                  <SettingsContainer />
+                  <NavBar hide={true} />
+                </>
+              }
+            />
             <Route path='*' element={<Navigate replace={true} to='/compass' />} />
           </Routes>
         </div>

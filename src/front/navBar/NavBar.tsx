@@ -26,12 +26,21 @@ const Button = ({text, icon, to, replace}: ButtonProps) => {
   );
 };
 
-const NavBar = memo(() => {
+type NavBarProps = {
+  hide: boolean;
+};
+
+const NavBar = memo(({hide}: NavBarProps) => {
   const {t} = useTranslation();
 
   return (
-    <nav className='shrink-0 sticky mt-4 mb-8 bottom-8 self-center border-gray-400 dark:border-gray-600 bg-white dark:bg-gray-800 shadow-sm shadow-gray-600/50 dark:shadow-black/50 border rounded-4xl overflow-hidden flex'>
-      <div className='flex flex-row'>
+    <nav
+      inert={hide}
+      className='shrink-0 sticky mt-4 mb-8 bottom-8 self-center flex overflow-clip [overflow-clip-margin:32px]'
+    >
+      <div
+        className={`flex flex-row border-gray-400 dark:border-gray-600 bg-white dark:bg-gray-800 shadow-sm shadow-gray-600/50 dark:shadow-black/50 border rounded-4xl overflow-hidden transition-transform ${hide ? 'translate-y-56' : ''}`}
+      >
         <Button text={t('navBar.compass')} icon={<CompassIcon />} to='/compass' replace={true} />
         <Button text={t('navBar.speedometer')} icon={<SpeedometerIcon />} to='/speedometer' replace={true} />
         <Button text={t('navBar.settings')} icon={<SettingsIcon />} to='/settings' replace={false} />
