@@ -81,7 +81,7 @@ const SpeedometerContainer = () => {
           <div>{getRelativeTime(lastUpdateDate, currentDate)}</div>
           <div>{t('speedometer.speed')}:</div>
           <div>{addSuffix(value.coords.speed, 'm/s') ?? t('speedometer.notAvailable')}</div>
-          <div>{t('speedometer.accuracy')}:</div>
+          <div>{t('speedometer.locationAccuracy')}:</div>
           <div>{addSuffix(value.coords.accuracy, 'm') ?? t('speedometer.notAvailable')}</div>
           <div>{t('speedometer.latitude')}:</div>
           <div>
