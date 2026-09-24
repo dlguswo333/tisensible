@@ -9,7 +9,7 @@
     "speedometer.gpsError": "⚠️ GPS trackng has been failed. Check the GPS permission or status.",
     "speedometer.lastUpdate": "last update",
     "speedometer.speed": "speed",
-    "speedometer.accuracy": "accuracy",
+    "speedometer.locationAccuracy": "location accuracy",
     "speedometer.latitude": "latitude",
     "speedometer.longitude": "longitude",
     "speedometer.altitude": "altitude",
