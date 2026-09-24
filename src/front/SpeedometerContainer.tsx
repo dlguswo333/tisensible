@@ -1,6 +1,8 @@
+import {useRef} from 'react';
 import {useTranslation} from 'react-i18next';
 import Speedometer from './Speedometer';
 import useCurrentDate from './useCurrentDate';
+import useDownsizeSpeedometer from './useDownsizeSpeedometer';
 import useSpeedometerSensor from './useSpeedometerSensor';
 import useSpeedUnit from './useSpeedUnit';
 import {calculateSpeedInUnit} from './util/speed';
@@ -101,11 +103,18 @@ const SpeedometerContainer = () => {
   const currentDate = useCurrentDate(1000);
   const {speedUnit} = useSpeedUnit();
   const speed = calculateSpeedInUnit(value?.coords.speed ?? null, speedUnit);
+  const speedometerOuterContainerElementRef = useRef<HTMLDivElement>(null);
+  const shouldDownsizeSpeedometerInnerContainer = useDownsizeSpeedometer(speedometerOuterContainerElementRef);
 
   return (
     <div className='my-auto pt-[10vh] h-full font-mono text-black dark:text-white'>
-      <div className='p-3 max-w-[90%] landscape:max-w-2xl flex flex-col content-start items-center mx-auto '>
-        <Speedometer value={speed ?? null} />
+      <div
+        className='p-3 max-w-[90%] landscape:max-w-2xl flex flex-col content-start items-center mx-auto'
+        ref={speedometerOuterContainerElementRef}
+      >
+        <div className={`w-full origin-bottom transition ${shouldDownsizeSpeedometerInnerContainer ? 'scale-50' : ''}`}>
+          <Speedometer value={speed} />
+        </div>
         <div className='pt-2 px-3 self-end text-right text-base'>{speedUnit}</div>
       </div>
       <div className='py-6 grid place-items-center'>
