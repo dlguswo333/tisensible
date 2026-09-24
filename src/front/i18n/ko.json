@@ -9,7 +9,7 @@
     "speedometer.gpsError": "⚠️ GPS 추적이 실패했습니다.\nGPS 권한과 상태를 확인하세요.",
     "speedometer.lastUpdate": "마지막 업데이트",
     "speedometer.speed": "속도",
-    "speedometer.accuracy": "정확도",
+    "speedometer.locationAccuracy": "위치 정확도",
     "speedometer.latitude": "위도",
     "speedometer.longitude": "경도",
     "speedometer.altitude": "고도",

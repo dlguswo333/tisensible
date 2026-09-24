@@ -145,7 +145,7 @@ const SpeedometerContainer = () => {
               value={addSuffix(roundFractionDigits(value.coords.speed, 6), 'm/s') ?? null}
             />
             <DetailInfoItem
-              label={t('speedometer.accuracy')}
+              label={t('speedometer.locationAccuracy')}
               value={addSuffix(roundFractionDigits(value.coords.accuracy, 6), 'm') ?? null}
               warningLevel={getWarningLevel(value.coords.accuracy, 'ACCURACY')}
             />
