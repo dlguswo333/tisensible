@@ -3,7 +3,7 @@ import {memo} from 'react';
 
 type Props = {
   /** 0-360 in degree. */
-  rotate: number;
+  rotate: number | null;
 };
 
 const subScales = range(0, 32);
@@ -100,10 +100,12 @@ Needle.displayName = 'Needle';
 
 const Compass = ({rotate}: Props) => {
   return (
-    <div className='p-1 w-[90%] relative mx-auto max-w-2xl landscape:max-h-[70%] aspect-square'>
+    <div
+      className={`p-1 w-[90%] relative mx-auto max-w-2xl landscape:max-h-[70%] aspect-square ${rotate === null ? 'brightness-30' : ''}`}
+    >
       <svg className='w-full h-full' viewBox='0 0 100 100'>
         <title>Compass</title>
-        <g style={{transform: `rotate(${rotate}deg)`, transformOrigin: 'center'}}>
+        <g style={{transform: rotate !== null ? `rotate(${rotate}deg)` : undefined, transformOrigin: 'center'}}>
           <Background />
         </g>
         <g>

@@ -1,14 +1,38 @@
+import {useRef} from 'react';
 import {useTranslation} from 'react-i18next';
 import Speedometer from './Speedometer';
 import useCurrentDate from './useCurrentDate';
+import useDownsizeSpeedometer from './useDownsizeSpeedometer';
 import useSpeedometerSensor from './useSpeedometerSensor';
 import useSpeedUnit from './useSpeedUnit';
 import {calculateSpeedInUnit} from './util/speed';
-import {addSuffix, getAzimuthString, getLatitudeSuffix, getLongitudeSuffix, getRelativeTime} from './util/string';
+import {
+  addSuffix,
+  getAzimuthString,
+  getLatitudeSuffix,
+  getLongitudeSuffix,
+  getRelativeTime,
+  roundFractionDigits,
+} from './util/string';
+
+const WARNING_LEVELS = {
+  ACCURACY: {
+    LOW: 10,
+    HIGH: 30,
+  },
+  ALTITUDE_ACCURACY: {
+    LOW: 20,
+    HIGH: 40,
+  },
+} as const;
+const getWarningLevel = (value: number, info: keyof typeof WARNING_LEVELS) => {
+  return value >= WARNING_LEVELS[info].HIGH ? 'HIGH' : value >= WARNING_LEVELS[info].LOW ? 'LOW' : null;
+};
 
 type ButtonProps = {
   onClick: () => unknown;
 };
+
 const StopButton = ({onClick}: ButtonProps) => {
   return (
     <button
@@ -43,6 +67,35 @@ const StartButton = ({onClick}: ButtonProps) => {
   );
 };
 
+type DetailInfoItemProps = {
+  label: string;
+  value: string | null;
+  warningLevel?: 'LOW' | 'HIGH' | null;
+};
+
+const DetailInfoItem = ({label, value, warningLevel}: DetailInfoItemProps) => {
+  const {t} = useTranslation();
+  const id = `detailInfoId-${label}`;
+  const textColorClassName =
+    value === null
+      ? 'text-gray-700/80 dark:text-gray-300/80'
+      : warningLevel === null || warningLevel === undefined
+        ? undefined
+        : warningLevel === 'LOW'
+          ? 'text-orange-400'
+          : 'text-red-600';
+  return (
+    <div>
+      <label htmlFor={id} className={`${textColorClassName} font-bold`}>
+        {label}
+      </label>
+      <div id={id} className={textColorClassName}>
+        {value ?? t('speedometer.notAvailable')}
+      </div>
+    </div>
+  );
+};
+
 const SpeedometerContainer = () => {
   const {t} = useTranslation();
   const {isEnabled, hasPermission, requestPermission, setIsEnabled, value, lastUpdateDate, error} =
@@ -50,14 +103,21 @@ const SpeedometerContainer = () => {
   const currentDate = useCurrentDate(1000);
   const {speedUnit} = useSpeedUnit();
   const speed = calculateSpeedInUnit(value?.coords.speed ?? null, speedUnit);
+  const speedometerOuterContainerElementRef = useRef<HTMLDivElement>(null);
+  const shouldDownsizeSpeedometerInnerContainer = useDownsizeSpeedometer(speedometerOuterContainerElementRef);
 
   return (
     <div className='my-auto pt-[10vh] h-full font-mono text-black dark:text-white'>
-      <div className='p-3 max-w-[90%] landscape:max-w-2xl flex flex-col content-start items-center mx-auto '>
-        <Speedometer value={speed ?? null} />
+      <div
+        className='p-3 max-w-[90vmin] flex flex-col content-start items-center mx-auto'
+        ref={speedometerOuterContainerElementRef}
+      >
+        <div className={`w-full origin-bottom transition ${shouldDownsizeSpeedometerInnerContainer ? 'scale-50' : ''}`}>
+          <Speedometer value={speed} />
+        </div>
         <div className='pt-2 px-3 self-end text-right text-base'>{speedUnit}</div>
       </div>
-      <div className='py-8 grid place-items-center'>
+      <div className='py-6 grid place-items-center'>
         {isEnabled ? (
           <StopButton onClick={() => setIsEnabled(false)} />
         ) : (
@@ -71,37 +131,54 @@ const SpeedometerContainer = () => {
           />
         )}
       </div>
-      <div className='pt-5 text-red-400 grid place-items-center gap-y-2 text-sm font-bold whitespace-break-spaces text-center'>
-        {hasPermission === false && <div>{t('speedometer.noGpsPermission')}</div>}
-        {error !== null && <div>{t('speedometer.gpsError')}</div>}
-      </div>
+      {(hasPermission === false || error !== null) && (
+        <div className='pt-5 text-red-400 grid place-items-center gap-y-2 text-sm font-bold whitespace-break-spaces text-center'>
+          {hasPermission === false && <div>{t('speedometer.noGpsPermission')}</div>}
+          {error !== null && <div>{t('speedometer.gpsError')}</div>}
+        </div>
+      )}
       {value !== null && (
-        <div className='mx-auto p-3 pb-0 w-fit max-w-full grid grid-cols-2 gap-x-1 text-sm overflow-hidden *:whitespace-nowrap *:text-ellipsis *:overflow-hidden'>
-          <div>{t('speedometer.lastUpdate')}:</div>
-          <div>{getRelativeTime(lastUpdateDate, currentDate)}</div>
-          <div>{t('speedometer.speed')}:</div>
-          <div>{addSuffix(value.coords.speed, 'm/s') ?? t('speedometer.notAvailable')}</div>
-          <div>{t('speedometer.locationAccuracy')}:</div>
-          <div>{addSuffix(value.coords.accuracy, 'm') ?? t('speedometer.notAvailable')}</div>
-          <div>{t('speedometer.latitude')}:</div>
-          <div>
-            {addSuffix(Math.abs(value.coords.latitude), getLatitudeSuffix(value.coords.latitude)) ??
-              t('speedometer.notAvailable')}
-          </div>
-          <div>{t('speedometer.longitude')}:</div>
-          <div>
-            {addSuffix(Math.abs(value.coords.longitude), getLongitudeSuffix(value.coords.longitude)) ??
-              t('speedometer.notAvailable')}
-          </div>
-          <div>{t('speedometer.altitude')}:</div>
-          <div>{addSuffix(value.coords.altitude, 'm') ?? t('speedometer.notAvailable')}</div>
-          <div>{t('speedometer.altitudeAccuracy')}:</div>
-          <div>{addSuffix(value.coords.altitudeAccuracy, 'm') ?? t('speedometer.notAvailable')}</div>
-          <div>{t('speedometer.travelDirection')}:</div>
-          <div>
-            {value.coords.course !== null && value.coords.course !== undefined
-              ? addSuffix(value.coords.course, '° ') + getAzimuthString(value.coords.course, true)
-              : t('speedometer.notAvailable')}
+        <div className='w-[90%] max-w-xl mx-auto p-3 pb-0'>
+          <div className='grid grid-cols-2 md:grid-cols-4 gap-2 text-sm overflow-hidden *:whitespace-nowrap *:text-ellipsis *:overflow-hidden'>
+            <DetailInfoItem
+              label={t('speedometer.speed')}
+              value={addSuffix(roundFractionDigits(value.coords.speed, 6), 'm/s') ?? null}
+            />
+            <DetailInfoItem
+              label={t('speedometer.locationAccuracy')}
+              value={addSuffix(roundFractionDigits(value.coords.accuracy, 6), 'm') ?? null}
+              warningLevel={getWarningLevel(value.coords.accuracy, 'ACCURACY')}
+            />
+            <DetailInfoItem
+              label={t('speedometer.latitude')}
+              value={addSuffix(Math.abs(value.coords.latitude), getLatitudeSuffix(value.coords.latitude)) ?? null}
+            />
+            <DetailInfoItem
+              label={t('speedometer.longitude')}
+              value={addSuffix(Math.abs(value.coords.longitude), getLongitudeSuffix(value.coords.longitude)) ?? null}
+            />
+            <DetailInfoItem
+              label={t('speedometer.altitude')}
+              value={addSuffix(roundFractionDigits(value.coords.altitude, 6), 'm') ?? null}
+            />
+            <DetailInfoItem
+              label={t('speedometer.altitudeAccuracy')}
+              value={addSuffix(roundFractionDigits(value.coords.altitudeAccuracy, 6), 'm') ?? null}
+              warningLevel={
+                value.coords.altitudeAccuracy !== null && value.coords.altitudeAccuracy !== undefined
+                  ? getWarningLevel(value.coords.altitudeAccuracy, 'ALTITUDE_ACCURACY')
+                  : null
+              }
+            />
+            <DetailInfoItem
+              label={t('speedometer.travelDirection')}
+              value={
+                value.coords.course !== null && value.coords.course !== undefined
+                  ? addSuffix(value.coords.course, '° ') + getAzimuthString(value.coords.course, true)
+                  : null
+              }
+            />
+            <DetailInfoItem label={t('speedometer.lastUpdate')} value={getRelativeTime(lastUpdateDate, currentDate)} />
           </div>
         </div>
       )}
