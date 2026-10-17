@@ -151,11 +151,21 @@ const SpeedometerContainer = () => {
             />
             <DetailInfoItem
               label={t('speedometer.latitude')}
-              value={addSuffix(Math.abs(value.coords.latitude), getLatitudeSuffix(value.coords.latitude)) ?? null}
+              value={
+                addSuffix(
+                  roundFractionDigits(Math.abs(value.coords.latitude), 6),
+                  getLatitudeSuffix(value.coords.latitude),
+                ) ?? null
+              }
             />
             <DetailInfoItem
               label={t('speedometer.longitude')}
-              value={addSuffix(Math.abs(value.coords.longitude), getLongitudeSuffix(value.coords.longitude)) ?? null}
+              value={
+                addSuffix(
+                  roundFractionDigits(Math.abs(value.coords.longitude), 6),
+                  getLongitudeSuffix(value.coords.longitude),
+                ) ?? null
+              }
             />
             <DetailInfoItem
               label={t('speedometer.altitude')}
